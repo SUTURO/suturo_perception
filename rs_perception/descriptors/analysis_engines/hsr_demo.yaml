@@ -1,0 +1,15 @@
+ae:
+  name: demo
+fixedflow:
+  - CollectionReader
+  - ImagePreprocessor
+  - PointCloudFilter
+  - NormalEstimator
+  - PlaneAnnotator
+  - ImageSegmentationAnnotator
+  - PointCloudClusterExtractor
+  - ClusterMerger
+  - Cluster3DGeometryAnnotator
+  - TFBroadcaster
+CollectionReader:
+  camera_config_files: ['config_hsrb_robot.ini']
