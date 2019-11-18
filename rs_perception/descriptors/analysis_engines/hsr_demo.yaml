@@ -1,6 +1,7 @@
 ae:
   name: demo
 fixedflow:
+  - Trigger
   - CollectionReader
   - ImagePreprocessor
   - HSR_PointCloudFilter
