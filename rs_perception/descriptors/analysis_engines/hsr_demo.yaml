@@ -3,7 +3,7 @@ ae:
 fixedflow:
   - CollectionReader
   - ImagePreprocessor
-  - PointCloudFilter
+  - HSR_PointCloudFilter
   - NormalEstimator
   - PlaneAnnotator
   - ImageSegmentationAnnotator
