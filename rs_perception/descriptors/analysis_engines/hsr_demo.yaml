@@ -12,5 +12,13 @@ fixedflow:
   - ClusterMerger
   - Cluster3DGeometryAnnotator
   - TFBroadcaster
+
 CollectionReader:
   camera_config_files: ['config_hsrb_robot.ini']
+
+PointCloudFilter:
+  transform_cloud: true
+
+PlaneAnnotator:
+  horizontal: false
+  min_plane_inliers: 10000
