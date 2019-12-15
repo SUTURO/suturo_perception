@@ -1,9 +1,9 @@
 ae:
   name: Storage pipeline
 fixedflow:
-  - CollectionReader
+  - CollectionReaderSuturo
   - ImagePreprocessor
-  - StorageWriter
+  - StorageWriterSuturo
 StorageWriter:
   -storagedb: 'shelf_empty' 
   -enableViews: ['color_image_hd','depth_image_hd','camera_info','camera_info_hd','scene', 'cloud']

@@ -1,5 +1,5 @@
 annotator:
-  name: CollectionReader
+  name: CollectionReaderSuturo
   implementation: rs_CollectionReader
   description: 'Uses Camera Bridges, as available, to fill the cas with sensor data.'
 parameters:

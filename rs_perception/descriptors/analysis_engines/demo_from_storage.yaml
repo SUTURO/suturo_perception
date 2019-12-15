@@ -1,7 +1,7 @@
 ae:
-  name: demo
+  name: demo_from_storage
 fixedflow:
-  - CollectionReader
+  - CollectionReaderSuturo
   - ImagePreprocessor
   - PointCloudFilter
   - NormalEstimator

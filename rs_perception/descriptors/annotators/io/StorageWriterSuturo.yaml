@@ -1,5 +1,5 @@
 annotator:
-  name: StorageWriter
+  name: StorageWriterSuturo
   implementation: rs_StorageWriter
   description: 'Persistent storage for clusters.'
 parameters:
