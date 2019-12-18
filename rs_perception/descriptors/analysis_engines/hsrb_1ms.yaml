@@ -1,0 +1,27 @@
+ae:
+  name: hsrb_1ms
+fixedflow:
+  - CollectionReader
+  - ImagePreprocessor
+  - PointCloudFilter
+  - NormalEstimator
+  - PlaneAnnotator
+  - PointCloudClusterExtractor
+  - ClusterMerger
+  - ClusterColorHistogramCalculator
+  - Cluster3DGeometryAnnotator
+  - TFBroadcaster 
+ 
+CollectionReader:
+  camera_config_files: ['config_hsrb.ini']
+
+PlaneAnnotator:
+  horizontal: false
+  vertical: true
+  min_plane_inliers: 5000
+
+PointCloudClusterExtractor:
+  cluster_max_size: 12500
+
+ClusterColorHistogramCalculator:
+  semantic_label: true
