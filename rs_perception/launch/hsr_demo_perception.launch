@@ -1,4 +1,4 @@
 <launch>
   <node name="perception_pipeline" pkg="robosherlock" type="run" args="_ae:=hsrb_1ms _vis:=true" />
-
+  <node name="msg_converter" pkg="rs_perception" type="hermes_planning.py" />
 </launch>
