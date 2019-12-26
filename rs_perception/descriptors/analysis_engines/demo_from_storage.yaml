@@ -1,6 +1,7 @@
 ae:
   name: demo_from_storage
 fixedflow:
+  - Trigger
   - CollectionReaderSuturo
   - ImagePreprocessor
   - PointCloudFilter

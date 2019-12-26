@@ -68,7 +68,6 @@
   <exec_depend>message_generation</exec_depend>
   <depend>suturo_perception_msgs</depend>
 
-
   <!-- The export tag contains other, unspecified, tags -->
   <export>
     <!-- Other tools can request additional information be placed here -->

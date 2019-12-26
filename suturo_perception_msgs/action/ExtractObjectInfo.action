@@ -5,4 +5,4 @@ bool visualize
 ObjectDetectionData detectionData
 ---
 #feedback
-int32 feedback
+string feedback
