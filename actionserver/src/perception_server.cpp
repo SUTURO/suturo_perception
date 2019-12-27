@@ -11,9 +11,8 @@ class PerceptionServer
 protected:
 
     ros::NodeHandle nh_;
-    actionlib::SimpleActionServer<suturo_perception_msgs::ExtractObjectInfoAction> as_; // NodeHandle instance must be created before this line. Otherwise strange error occurs.
+    actionlib::SimpleActionServer<suturo_perception_msgs::ExtractObjectInfoAction> as_;
     std::string action_name_;
-    // create messages that are used to publish feedback/result
     suturo_perception_msgs::ExtractObjectInfoFeedback feedback_;
     suturo_perception_msgs::ExtractObjectInfoResult result_;
 
@@ -64,7 +63,6 @@ public:
         }
         as_.publishFeedback(feedback_);
 
-        // this sleep is not necessary, the sequence is computed at 1 Hz for demonstration purposes
         r.sleep();
 
 
@@ -79,7 +77,7 @@ public:
             result_.detectionData.depth = 50.0;
             result_.detectionData.region = "shelf";
             ROS_INFO("%s: Succeeded", action_name_.c_str());
-            // set the action state to succeeded
+
             as_.setSucceeded(result_);
         }
     }
