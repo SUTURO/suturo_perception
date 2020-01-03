@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>actionserver</name>
-  <version>0.0.1</version>
+  <version>0.1</version>
   <description>Actionserver for SUTURO Perception 2019/20</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
@@ -67,6 +67,8 @@
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>message_generation</exec_depend>
   <depend>suturo_perception_msgs</depend>
+  <depend>robosherlock_msgs</depend>
+  <depend>rapidjson_ros</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

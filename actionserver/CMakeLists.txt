@@ -15,6 +15,8 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   suturo_perception_msgs
+  robosherlock_msgs
+  rapidjson_ros
 )
 
 ## System dependencies are found with CMake's conventions
@@ -52,7 +54,8 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## Generate messages in the 'msg' folder
 # add_message_files(
-#   FILES
+#   FILES#include <rapidjson/document.h>
+
 #   Message1.msg
 #   Message2.msg
 # )
@@ -72,7 +75,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
-  DEPENDENCIES actionlib_msgs std_msgs suturo_perception_msgs
+  DEPENDENCIES actionlib_msgs std_msgs suturo_perception_msgs robosherlock_msgs
 )
 
 ################################################
@@ -107,7 +110,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES actionlib_tutorials
-   CATKIN_DEPENDS actionlib_msgs suturo_perception_msgs
+   CATKIN_DEPENDS actionlib_msgs suturo_perception_msgs robosherlock_msgs rapidjson_ros
 #  DEPENDS system_lib
 )
 
