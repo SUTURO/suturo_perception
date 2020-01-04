@@ -3,12 +3,12 @@
 string name
 float64 confidence
 uint32 shape # and the shape (please, if possible, as fallback if confidence is low). 
-#geometry_msgs/PoseStamped pose
+geometry_msgs/PoseStamped pose
 float64 width
 float64 height
 float64 depth
 std_msgs/ColorRGBA color
-#geometry_msgs/TransformStamped relative_tf_tree
+geometry_msgs/TransformStamped relative_tf_tree
 
 # Shape values
 uint32 MISC=0

@@ -97,45 +97,74 @@ public:
     }
 
     void processRSData(const robosherlock_msgs::RSObjectDescriptions::ConstPtr& tfBroadcast) {
-        //ROS_INFO("I have got some info");
-        //ROS_INFO("I heard: [%s]", tfBroadcast->obj_descriptions[0].c_str());
-        //ROS_INFO("Second description: %s", tfBroadcast->obj_descriptions[1].c_str());
 
-        // parsing JSON
-        rapidjson::Document json;
-        json.Parse(tfBroadcast->obj_descriptions[0].c_str()); // todo: this needs to be done with every element of obj_descriptions-Array
+        for (int i=0; i < tfBroadcast->obj_descriptions.size(); i++) {
+            // parsing JSON
+            rapidjson::Document json;
+            json.Parse(
+                    tfBroadcast->obj_descriptions[i].c_str()); // todo: this needs to be done with every element of obj_descriptions-Array
 
-        suturo_perception_msgs::ObjectDetectionData &resultData = result_.detectionData; // creating reference to shorten statements
+            suturo_perception_msgs::ObjectDetectionData resultData;
 
-        // SemanticColor Annotator
-        rapidjson::Value& semanticColor = json["rs.annotation.SemanticColor"][0]["color"];
-        std::string colorString = semanticColor.GetString();
-        float& colorR = resultData.color.r;
-        float& colorG = resultData.color.g;
-        float& colorB = resultData.color.b;
-        float& colorA = resultData.color.a;
+            // SemanticColor Annotator
+            rapidjson::Value &semanticColor = json["rs.annotation.SemanticColor"][0]["color"];
+            std::string colorString = semanticColor.GetString();
+            float &colorR = resultData.color.r;
+            float &colorG = resultData.color.g;
+            float &colorB = resultData.color.b;
+            float &colorA = resultData.color.a;
 
-        if (colorString.compare("yellow") == 0) {
-            colorR = 255;
-            colorG = 255;
-            colorB = 50;
-        } else {
-            colorA = 0.5;
+            if (colorString.compare("yellow") == 0) {
+                colorR = 255;
+                colorG = 255;
+                colorB = 50;
+            } else {
+                //ROS_ERROR(colorString);
+                colorA = 0.5;
+            }
+
+            // Geometry
+            rapidjson::Value &geometry = json["rs.annotation.Geometry"][0]["boundingBox"]["rs.pcl.BoundingBox3D"];
+            resultData.width = geometry["width"].GetDouble();
+            resultData.height = geometry["height"].GetDouble();
+            resultData.depth = geometry["depth"].GetDouble();
+
+            // Position (source: 3DEstimate)
+            rapidjson::Value &poseAnnotation = json["rs.annotation.PoseAnnotation"][0]["camera"]["rs.tf.StampedPose"];
+            resultData.pose.header.seq = std::atoi(json["id"].GetString());
+            //resultData.pose.header.stamp.sec = 5;
+            //resultData.pose.header.stamp.nsec = poseAnnotation["timestamp"].GetFloat(); // todo find a way to work with timestamps like 1576235206391549580
+            resultData.pose.header.frame_id = poseAnnotation["frame"].GetString();
+            resultData.pose.pose.position.x = poseAnnotation["translation"][0].GetFloat();
+            resultData.pose.pose.position.y = poseAnnotation["translation"][1].GetFloat();
+            resultData.pose.pose.position.z = poseAnnotation["translation"][2].GetFloat();
+            resultData.pose.pose.orientation.x = poseAnnotation["rotation"][0].GetFloat();
+            resultData.pose.pose.orientation.y = poseAnnotation["rotation"][1].GetFloat();
+            resultData.pose.pose.orientation.z = poseAnnotation["rotation"][2].GetFloat();
+            resultData.pose.pose.orientation.w = poseAnnotation["rotation"][3].GetFloat();
+
+            rapidjson::Value &tfTree = json["rs.annotation.PoseAnnotation"][0]["world"]["rs.tf.StampedPose"];
+            resultData.relative_tf_tree.header.seq = std::atoi(json["id"].GetString());
+            resultData.relative_tf_tree.header.frame_id = tfTree["frame"].GetString();
+            //resultData.pose.header.stamp.sec = 5;
+            //resultData.pose.header.stamp.nsec = poseAnnotation["timestamp"].GetFloat(); // todo find a way to work with timestamps like 1576235206391549580
+            resultData.relative_tf_tree.transform.translation.x = tfTree["translation"][0].GetFloat();
+            resultData.relative_tf_tree.transform.translation.y = tfTree["translation"][1].GetFloat();
+            resultData.relative_tf_tree.transform.translation.z = tfTree["translation"][2].GetFloat();
+            resultData.relative_tf_tree.transform.rotation.x = tfTree["rotation"][0].GetFloat();
+            resultData.relative_tf_tree.transform.rotation.y = tfTree["rotation"][1].GetFloat();
+            resultData.relative_tf_tree.transform.rotation.z = tfTree["rotation"][2].GetFloat();
+            resultData.relative_tf_tree.transform.rotation.w = tfTree["rotation"][3].GetFloat();
+
+            // Dummy data /todo fill out with real data
+            resultData.name = "unknown name";
+            resultData.shape = 0;
+            resultData.confidence = i;
+            //stampedPose
+            //stampedTransformation
+
+            result_.detectionData.push_back(resultData);
         }
-
-        // Geometry
-        rapidjson::Value& geometry = json["rs.annotation.Geometry"][0]["boundingBox"]["rs.pcl.BoundingBox3D"];
-        resultData.width = geometry["width"].GetDouble();
-        resultData.height = geometry["height"].GetDouble();
-        resultData.depth = geometry["depth"].GetDouble();
-
-
-        // Dummy data /todo fill out with real data
-        resultData.name = "unknown name";
-        resultData.shape = 0;
-        resultData.confidence = 1;
-        //stampedPose
-        //stampedTransformation
 
         gotData = true;
     }
