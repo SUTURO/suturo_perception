@@ -1,7 +1,8 @@
 # suturo_perception
-Start Pipeline with:
-rosrun robosherlock run _ae:=hsr_demo _vis:=true
+suturo_perception_msgs are required. (Found in suturo_ressources)
 
-Set _vis to false if no visual feedback is needed.
+Start pipeline and action server with:
+roslaunch rs_perception hsrb_perception.launch
 
-Pipeline waits for trigger to start. "rosservice call /perception_pipeline/trigger" starts the pipeline and makes it run once. After that it waits for a new trigger. Results are published to "/perception_pipeline/result_advertiser".
+Start perceive action client:
+rosrun actionserver perception_client
