@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   suturo_perception_msgs
   robosherlock_msgs
   rapidjson_ros
+  visualization_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -75,7 +76,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
-  DEPENDENCIES actionlib_msgs std_msgs suturo_perception_msgs robosherlock_msgs
+  DEPENDENCIES actionlib_msgs std_msgs suturo_perception_msgs robosherlock_msgs visualization_msgs
 )
 
 ################################################
