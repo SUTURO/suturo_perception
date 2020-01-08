@@ -1,6 +1,7 @@
 ae:
   name: hsrb_1ms
 fixedflow:
+  - Trigger
   - CollectionReader
   - ImagePreprocessor
   - PointCloudFilter
