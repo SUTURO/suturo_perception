@@ -30,7 +30,6 @@ protected:
     ros::NodeHandle nh;
     std::string action_name;
     SuturoProcessManager pm;
-    bool gotData;
 
 public:
     PerceptionServer(std::string &name, std::string pipeline);
@@ -46,7 +45,6 @@ protected:
 public:
     ExtractObjectInfoServer(std::string name);
     void execute(const ExtractObjectInfoGoalConstPtr &goal);
-    void result_callback(const robosherlock_msgs::RSObjectDescriptions::ConstPtr& tfBroadcast);
 };
 
 class ExtractPlaneInfoServer : PerceptionServer {
@@ -58,7 +56,6 @@ protected:
 public:
     ExtractPlaneInfoServer(std::string name);
     void execute(const ExtractObjectInfoGoalConstPtr &goal);
-    void result_callback(const robosherlock_msgs::RSObjectDescriptions::ConstPtr& tfBroadcast);
 };
 
 class ExtractObjectInfoInRegionServer : PerceptionServer {
@@ -70,6 +67,5 @@ protected:
 public:
     ExtractObjectInfoInRegionServer(std::string name);
     void execute(const ExtractObjectInfoInRegionGoalConstPtr &goal);
-    void result_callback(const robosherlock_msgs::RSObjectDescriptions::ConstPtr& tfBroadcast);
 };
 #endif
