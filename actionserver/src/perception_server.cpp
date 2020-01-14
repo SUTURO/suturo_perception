@@ -2,11 +2,12 @@
 
 int main(int argc, char** argv)
 {
-    ros::init(argc, argv, "perception_actionserver");
+    ros::init(argc, argv, EOI_NAME);
 
     ros::MultiThreadedSpinner spinner(4);
-    ExtractObjectInfoServer server("perception_actionserver");
-    //ExtractPlaneInfoServer server2("perception_actionserver_planes");
+    ExtractObjectInfoServer eoi_server(EOI_NAME);
+    ExtractObjectInfoInRegionServer eoi_ir_server(EOI_IR_NAME);
+    ExtractPlaneInfoServer epi_server(EPI_NAME);
 
     spinner.spin();
 

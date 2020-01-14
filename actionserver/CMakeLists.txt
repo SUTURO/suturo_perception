@@ -156,7 +156,10 @@ add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EX
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/actionlib_tutorials_node.cpp)
 add_executable(perception_server src/perception_server.cpp)
-add_executable(perception_client src/perception_client.cpp)
+
+add_executable(ExtractObjectInfoClient src/ExtractObjectInfoClient.cpp)
+add_executable(ExtractObjectInfoInRegionClient src/ExtractObjectInfoInRegionClient.cpp)
+add_executable(ExtractPlaneInfoClient src/ExtractPlaneInfoClient.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -167,22 +170,28 @@ add_executable(perception_client src/perception_client.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(
-        perception_server
-        perception_client
-        ${actionserver_EXPORTED_TARGETS}
-)
+
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(
   perception_server
-        ${PROJECT_NAME}
+  ${PROJECT_NAME}
   ${catkin_LIBRARIES}
 )
 
 target_link_libraries(
-  perception_client
-  ${catkin_LIBRARIES}
+        ExtractObjectInfoClient
+        ${catkin_LIBRARIES}
+)
+
+target_link_libraries(
+        ExtractObjectInfoInRegionClient
+        ${catkin_LIBRARIES}
+)
+
+target_link_libraries(
+        ExtractPlaneInfoClient
+        ${catkin_LIBRARIES}
 )
 
 #############

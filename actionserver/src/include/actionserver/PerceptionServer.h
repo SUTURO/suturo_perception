@@ -23,6 +23,10 @@
 
 #include <rs_hsrb_perception/SuturoProcessManager.h>
 
+#define EOI_NAME        "perception_actionserver"
+#define EOI_IR_NAME     "perception_actionserver_region"
+#define EPI_NAME        "perception_actionserver_plane"
+
 using namespace suturo_perception_msgs;
 
 class PerceptionServer {
@@ -49,13 +53,13 @@ public:
 
 class ExtractPlaneInfoServer : PerceptionServer {
 protected:
-    actionlib::SimpleActionServer<ExtractObjectInfoAction> server;
+    actionlib::SimpleActionServer<ExtractPlaneInfoAction> server;
     ExtractPlaneInfoFeedback feedback;
     ExtractPlaneInfoResult result;
 
 public:
     ExtractPlaneInfoServer(std::string name);
-    void execute(const ExtractObjectInfoGoalConstPtr &goal);
+    void execute(const ExtractPlaneInfoGoalConstPtr &goal);
 };
 
 class ExtractObjectInfoInRegionServer : PerceptionServer {
