@@ -1,20 +1,19 @@
 ae:
   name: hsrb_1ms
 fixedflow:
-  - Trigger
   - CollectionReader
   - ImagePreprocessor
-  - PointCloudFilter
+  #- RegionFilter
   - NormalEstimator
   - PlaneAnnotator
   - PointCloudClusterExtractor
-  - ClusterMerger
   - ClusterColorHistogramCalculator
   - Cluster3DGeometryAnnotator
-  - TFBroadcaster 
+  - PrimitiveShapeAnnotator
+  - RegionAnnotator
  
 CollectionReader:
-  camera_config_files: ['config_hsrb.ini']
+  camera_config_files: ['config_mongo_hsrb.ini']
 
 PlaneAnnotator:
   horizontal: false

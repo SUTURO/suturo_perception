@@ -1,4 +1,3 @@
 <launch>
-  <node name="perception_pipeline" pkg="robosherlock" type="run" args="_ae:=hsrb_1ms _vis:=true" />
-  <node name="perception_server" pkg="actionserver" type="perception_server" />
+  <node name="perception_server" pkg="actionserver" type="perception_server" output="screen" />
 </launch>

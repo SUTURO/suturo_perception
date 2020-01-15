@@ -2,11 +2,12 @@
 #include <actionlib/client/simple_action_client.h>
 #include <actionlib/client/terminal_state.h>
 #include <suturo_perception_msgs/ExtractObjectInfoAction.h>
+#include <PerceptionServer.h>
 
 int main (int argc, char **argv) {
     ros::init (argc, argv, "test_perception");
 
-    actionlib::SimpleActionClient<suturo_perception_msgs::ExtractObjectInfoAction> ac("perception_actionserver", true);
+    actionlib::SimpleActionClient<suturo_perception_msgs::ExtractObjectInfoAction> ac(EOI_IR_NAME, true);
 
     ROS_INFO("Waiting for action server to start.");
     ac.waitForServer();
@@ -14,6 +15,7 @@ int main (int argc, char **argv) {
     ROS_INFO("Action server started, sending goal.");
     suturo_perception_msgs::ExtractObjectInfoGoal goal;
     goal.visualize = true;
+    // TODO: Add regions here
     ac.sendGoal(goal);
 
     //wait for the action to return

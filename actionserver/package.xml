@@ -55,6 +55,7 @@
   <build_depend>roscpp</build_depend>
   <build_depend>rospy</build_depend>
   <build_depend>std_msgs</build_depend>
+  <build_depend>rs_hsrb_perception</build_depend>
   <build_export_depend>actionlib</build_export_depend>
   <build_export_depend>actionlib_msgs</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
@@ -66,6 +67,7 @@
   <exec_depend>rospy</exec_depend>
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>message_generation</exec_depend>
+  <exec_depend>rs_hsrb_perception</exec_depend>
   <depend>suturo_perception_msgs</depend>
   <depend>robosherlock_msgs</depend>
   <depend>rapidjson_ros</depend>

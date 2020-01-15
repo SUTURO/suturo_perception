@@ -15,10 +15,14 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   suturo_perception_msgs
+  robosherlock
   robosherlock_msgs
   rapidjson_ros
   visualization_msgs
+  rs_hsrb_perception
+  image_transport
 )
+find_include_dirs(RS_INCLUDE_DIRS_LIST)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -75,9 +79,9 @@ find_package(catkin REQUIRED COMPONENTS
 #)
 
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES actionlib_msgs std_msgs suturo_perception_msgs robosherlock_msgs visualization_msgs
-)
+##generate_messages(
+##  DEPENDENCIES actionlib_msgs std_msgs suturo_perception_msgs robosherlock_msgs visualization_msgs
+##)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -111,7 +115,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES actionlib_tutorials
-   CATKIN_DEPENDS actionlib_msgs suturo_perception_msgs robosherlock_msgs rapidjson_ros
+   CATKIN_DEPENDS actionlib_msgs suturo_perception_msgs robosherlock_msgs rapidjson_ros rs_hsrb_perception
 #  DEPENDS system_lib
 )
 
@@ -122,26 +126,40 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  src/include/actionserver
+  ${RS_INCLUDE_DIRS_LIST}
+  ${Boost_INCLUDE_DIRS}
   ${catkin_INCLUDE_DIRS}
 )
+
+find_additional_files()
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/actionlib_tutorials.cpp
 # )
-
+find_library(RS_SUTURO rs_hsrb_perception)
+add_library(${PROJECT_NAME}
+        src/PerceptionServer.cpp
+        src/include/actionserver/PerceptionServer.h
+        src/ExtractObjectInfoServer.cpp
+        src/ExtractPlaneInfoServer.cpp
+        src/ExtractObectInfoInRegionServer.cpp)
+target_link_libraries(${PROJECT_NAME} ${RS_SUTURO})
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/actionlib_tutorials_node.cpp)
 add_executable(perception_server src/perception_server.cpp)
-add_executable(perception_client src/perception_client.cpp)
+
+add_executable(ExtractObjectInfoClient src/ExtractObjectInfoClient.cpp)
+add_executable(ExtractObjectInfoInRegionClient src/ExtractObjectInfoInRegionClient.cpp)
+add_executable(ExtractPlaneInfoClient src/ExtractPlaneInfoClient.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -152,21 +170,28 @@ add_executable(perception_client src/perception_client.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(
-        perception_server
-        perception_client
-        ${actionserver_EXPORTED_TARGETS}
-)
+
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(
   perception_server
+  ${PROJECT_NAME}
   ${catkin_LIBRARIES}
 )
 
 target_link_libraries(
-  perception_client
-  ${catkin_LIBRARIES}
+        ExtractObjectInfoClient
+        ${catkin_LIBRARIES}
+)
+
+target_link_libraries(
+        ExtractObjectInfoInRegionClient
+        ${catkin_LIBRARIES}
+)
+
+target_link_libraries(
+        ExtractPlaneInfoClient
+        ${catkin_LIBRARIES}
 )
 
 #############
