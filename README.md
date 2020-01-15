@@ -12,7 +12,7 @@ rosrun actionserver ExtractObjectInfoClient
 rosrun actionserver ExtractObjectInfoInRegionClient   
 rosrun actionserver ExtractPlaneInfoClient   
 
-__Relevant topics:__
+__Relevant topics:__   
 perception_actionserver/result   
 perception_actionserver_region/result   
 perception_actionserver_plane/result   
