@@ -36,7 +36,7 @@ Go to the location and open the launch folder.
 
 Open openni2.launch with any editor make sure to use sudo. 
 
-Search for <arg name="depth_registration" default="false" /> and change dafault to true. 
+Search for name="depth_registration" default="false" and change dafault to true. 
 
 
 
