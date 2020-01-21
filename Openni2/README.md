@@ -1,10 +1,12 @@
-Download the main Programm : 
+Install Openni2 with the shell script or manually. 
+
+Download the Main Programm : 
 
 Openni2_camera : sudo apt-get install ros-kinetic-openni2-camera
 
 Openni2_launch : sudo apt-get install ros-kinetic-openni2-launch
 
-Download requirements : 
+Download Requirements : 
 
 GCC 4.x : sudo apt-get install g++ 
 
@@ -34,7 +36,7 @@ Go to the location and open the launch folder.
 
 Open openni2.launch with any editor make sure to use sudo. 
 
-Search for <arg name="depth_registration" default="false" /> and change the dafault to true. 
+Search for <arg name="depth_registration" default="false" /> and change dafault to true. 
 
 
 
