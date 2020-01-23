@@ -3,7 +3,7 @@ ae:
 fixedflow:
   - CollectionReader
   - ImagePreprocessor
-  #- RegionFilter
+  - RegionFilter
   - NormalEstimator
   - PlaneAnnotator
   - PointCloudClusterExtractor
