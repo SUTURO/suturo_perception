@@ -27,6 +27,6 @@ source devel/setup.bash
 
 echo -e "\e[32mUpdates : \e[0m"
 sudo apt-get update 
-sudo rosdep update
+# sudo rosdep update
 
 echo -e "(╯°Д°)╯ ┳━┳ \e[32mDone\e[0m (╯°Д°)╯ 彡┻━┻"
