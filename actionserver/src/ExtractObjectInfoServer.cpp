@@ -3,7 +3,7 @@
 void ExtractObjectInfoServer::execute(const suturo_perception_msgs::ExtractObjectInfoGoalConstPtr & goal) {
     std::map<std::string, boost::any> arguments = std::map<std::string, boost::any>();
     arguments["visualize"] = goal->visualize;
-    std::vector<std::string> regions = std::vector<std::string>();
+    arguments["regions"] = goal->regions;
     result.detectionData.clear();
     pm.run(arguments, result.detectionData);
     

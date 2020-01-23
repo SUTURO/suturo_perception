@@ -143,8 +143,7 @@ add_library(${PROJECT_NAME}
         src/PerceptionServer.cpp
         src/include/actionserver/PerceptionServer.h
         src/ExtractObjectInfoServer.cpp
-        src/ExtractPlaneInfoServer.cpp
-        src/ExtractObectInfoInRegionServer.cpp)
+        src/ExtractPlaneInfoServer.cpp)
 target_link_libraries(${PROJECT_NAME} ${RS_SUTURO})
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -158,7 +157,6 @@ add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EX
 add_executable(perception_server src/perception_server.cpp)
 
 add_executable(ExtractObjectInfoClient src/ExtractObjectInfoClient.cpp)
-add_executable(ExtractObjectInfoInRegionClient src/ExtractObjectInfoInRegionClient.cpp)
 add_executable(ExtractPlaneInfoClient src/ExtractPlaneInfoClient.cpp)
 
 ## Rename C++ executable without prefix
@@ -181,11 +179,6 @@ target_link_libraries(
 
 target_link_libraries(
         ExtractObjectInfoClient
-        ${catkin_LIBRARIES}
-)
-
-target_link_libraries(
-        ExtractObjectInfoInRegionClient
         ${catkin_LIBRARIES}
 )
 

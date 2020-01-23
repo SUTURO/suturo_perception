@@ -61,15 +61,4 @@ public:
     ExtractPlaneInfoServer(std::string name);
     void execute(const ExtractPlaneInfoGoalConstPtr &goal);
 };
-
-class ExtractObjectInfoInRegionServer : PerceptionServer {
-protected:
-    actionlib::SimpleActionServer<ExtractObjectInfoInRegionAction> server;
-    ExtractObjectInfoInRegionFeedback feedback;
-    ExtractObjectInfoInRegionResult result;
-
-public:
-    ExtractObjectInfoInRegionServer(std::string name);
-    void execute(const ExtractObjectInfoInRegionGoalConstPtr &goal);
-};
 #endif
