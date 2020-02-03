@@ -19,7 +19,7 @@ void ExtractPlaneInfoServer::execute(const suturo_perception_msgs::ExtractPlaneI
 }
 
 ExtractPlaneInfoServer::ExtractPlaneInfoServer(std::string name) :
-        PerceptionServer(name, "hsrb_1ms"),
+        PerceptionServer(name, "hsrb_planes"),
         server(nh, name, boost::bind(&ExtractPlaneInfoServer::execute, this, _1), false)
 {
     server.start();
