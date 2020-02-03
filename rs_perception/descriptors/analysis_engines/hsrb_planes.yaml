@@ -32,4 +32,4 @@ RegionFilter:
 
 PlaneAnnotator:
   horizontal: false
-  min_plane_inliers: 150000
+  min_plane_inliers: 15000

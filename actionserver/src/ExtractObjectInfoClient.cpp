@@ -15,6 +15,7 @@ int main (int argc, char **argv) {
     ROS_INFO("Action server started, sending goal.");
     suturo_perception_msgs::ExtractObjectInfoGoal goal;
     goal.visualize = true;
+    goal.regions.push_back("robocup_shelf_3");
     ac.sendGoal(goal);
 
     //wait for the action to return

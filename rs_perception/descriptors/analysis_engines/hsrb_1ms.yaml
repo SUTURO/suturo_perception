@@ -16,12 +16,12 @@ fixedflow:
   - KnnAnnotator
  
 CollectionReader:
-  camera_config_files: ['config_mongo_hsrb.ini']
+  camera_config_files: ['config_hsrb.ini']
 
 PlaneAnnotator:
-  horizontal: true
-  vertical: false
-  min_plane_inliers: 1000
+  horizontal: false
+  vertical: true
+  min_plane_inliers: 2500
 
 PointCloudFilter:
   minX: -1.0
@@ -34,3 +34,15 @@ PointCloudFilter:
 
 ClusterColorHistogramCalculator:
   semantic_label: true
+
+RegionFilter:
+  enable_frustum_culling: false
+  defaultRegions:
+  - robocup_table
+  - robocup_shelf_0
+  - robocup_shelf_1
+  - robocup_shelf_2
+  - robocup_shelf_3
+  - robocup_shelf_4
+  annotate: true
+
