@@ -15,7 +15,15 @@ int main (int argc, char **argv) {
     ROS_INFO("Action server started, sending goal.");
     suturo_perception_msgs::ExtractObjectInfoGoal goal;
     goal.visualize = true;
-    goal.regions.push_back("robocup_shelf_3");
+    
+    ros::NodeHandle nh("~");
+    std::string region;
+    if(nh.getParam("region", region)) {
+    	goal.regions.push_back(region);
+	ROS_INFO("Set region to: %s", region.c_str());
+	nh.deleteParam("region"); // Needed to remove cached data
+    }
+
     ac.sendGoal(goal);
 
     //wait for the action to return

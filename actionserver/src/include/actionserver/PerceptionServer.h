@@ -24,7 +24,6 @@
 #include <rs_hsrb_perception/SuturoProcessManager.h>
 
 #define EOI_NAME        "perception_actionserver"
-#define EOI_IR_NAME     "perception_actionserver_region"
 #define EPI_NAME        "perception_actionserver_plane"
 
 using namespace suturo_perception_msgs;
