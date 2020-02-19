@@ -1,6 +1,6 @@
 # suturo_perception
 __Dependencies:__   
-git clone https://github.com/SUTURO/suturo_resources.git
+git clone https://github.com/SUTURO/suturo_resources.git   
 git clone https://github.com/evankapi/rs_hsrb_perception.git -b suturo20   
 git clone https://github.com/RoboSherlock/robosherlock.git --recursive   
 
