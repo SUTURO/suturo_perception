@@ -1,8 +1,8 @@
 # suturo_perception
 __Dependencies:__   
-suturo_perception_msgs are required. (Found in suturo_ressources)   
-https://github.com/evankapi/rs_hsrb_perception (suturo20)   
-https://github.com/Suturo1819/robosherlock/tree/rs_v4r (rs_v4r)   
+git clone https://github.com/SUTURO/suturo_resources.git
+git clone https://github.com/evankapi/rs_hsrb_perception.git -b suturo20   
+git clone https://github.com/RoboSherlock/robosherlock.git --recursive   
 
 __Start pipelines and action server with:__   
 roscd rs_perception   
