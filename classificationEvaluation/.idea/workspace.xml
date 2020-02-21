@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d7e6749a-3490-460c-917e-c46c3212f526" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../actionserver/src/ExtractObjectInfoClient.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../actionserver/src/ExtractObjectInfoClient.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../actionserver/src/ExtractObjectInfoServer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../actionserver/src/ExtractObjectInfoServer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/rsClassificationEvaluator.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/rsClassificationEvaluator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../rs_perception/config/config_mongo_hsrb.ini" beforeDir="false" afterPath="$PROJECT_DIR$/../rs_perception/config/config_mongo_hsrb.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../rs_perception/descriptors/analysis_engines/demo_from_storage.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../rs_perception/descriptors/analysis_engines/demo_from_storage.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../rs_perception/descriptors/analysis_engines/hsrb_1ms.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../rs_perception/descriptors/analysis_engines/hsrb_1ms.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../rs_perception/descriptors/annotators/io/CollectionReaderSuturo.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../rs_perception/descriptors/annotators/io/CollectionReaderSuturo.yaml" afterDir="false" />
     </list>
@@ -16,12 +15,12 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/scripts/rsClassificationEvaluator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="31" column="70" selection-start-line="31" selection-start-column="70" selection-end-line="31" selection-end-column="70" />
+            <state relative-caret-position="798">
+              <caret line="60" column="43" lean-forward="true" selection-start-line="60" selection-start-column="43" selection-end-line="60" selection-end-column="43" />
               <folding>
                 <element signature="e#23#35#0" expanded="true" />
               </folding>
@@ -82,6 +81,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -134,24 +134,19 @@
       <option name="presentableId" value="Default" />
       <updated>1581013870352</updated>
       <workItem from="1581013871539" duration="2961000" />
+      <workItem from="1582269542993" duration="2399000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2961000" />
+    <option name="totallyTimeSpent" value="5360000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="0" width="1920" height="1080" extended-state="6" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25320512" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Database Changes" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Python Console" weight="0.32980973" />
-      <window_info active="true" anchor="bottom" id="Terminal" visible="true" weight="0.32980973" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32980973" />
@@ -159,11 +154,17 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="SciView" />
-      <window_info anchor="right" id="Database" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.32947367" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.32980973" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="Database" order="4" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -175,8 +176,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/scripts/rsClassificationEvaluator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="31" column="70" selection-start-line="31" selection-start-column="70" selection-end-line="31" selection-end-column="70" />
+        <state relative-caret-position="798">
+          <caret line="60" column="43" lean-forward="true" selection-start-line="60" selection-start-column="43" selection-end-line="60" selection-end-column="43" />
           <folding>
             <element signature="e#23#35#0" expanded="true" />
           </folding>
