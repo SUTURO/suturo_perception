@@ -4,7 +4,7 @@ fixedflow:
   - CollectionReader
   - ImagePreprocessor
   - PointCloudFilter
-  - RegionFilter
+  - SuturoRegionFilter
   - NormalEstimator
   - PlaneAnnotator
   - PointCloudClusterExtractor
