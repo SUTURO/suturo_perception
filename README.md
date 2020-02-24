@@ -1,5 +1,5 @@
 # suturo_perception
-####Dependencies:
+#### Dependencies:
 You can execute the following command to clone the dependencies of this package:
 ```
 git clone https://github.com/SUTURO/suturo_resources.git &&   
@@ -9,19 +9,19 @@ git clone https://github.com/RoboSherlock/rs_resources.git &&
 git clone https://github.com/bbferka/rs_addons.git -b release_preps
 ```
 
-####Start pipelines and action server:
+#### Start pipelines and action server:
 roscd rs_perception   
 roslaunch rs_perception hsrb_perception.launch   
 
-####Start action clients:  
+#### Start action clients:  
 rosrun actionserver ExtractObjectInfoClient   
 rosrun actionserver ExtractPlaneInfoClient   
 
 You can set \_region:=**_region name_** to limit the perception of objects to a specific region.
 
-####Notes:
+#### Notes:
 If you set the region to **_robocup_default_** the RegionFilter will be disabled to allow the perception of objects placed on the ground.
 
-####Result topics:  
+#### Result topics:  
 perception_actionserver/result   
 perception_actionserver_plane/result   
