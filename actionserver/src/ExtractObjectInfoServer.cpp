@@ -9,7 +9,6 @@ void ExtractObjectInfoServer::execute(const suturo_perception_msgs::ExtractObjec
     }
     
     result.detectionData.clear();
-    pm.setVisualize(goal->visualize);
     pm.run(arguments, result.detectionData);
     
     if(!result.detectionData.empty()) {
