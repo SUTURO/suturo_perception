@@ -3,8 +3,7 @@ ae:
 fixedflow:
   - CollectionReader
   - ImagePreprocessor  
-  - PointCloudFilter
-  - RegionFilter
+  - SuturoRegionFilter
   - NormalEstimator
   - PlaneAnnotator
   - PointCloudClusterExtractor
@@ -33,7 +32,7 @@ PointCloudFilter:
 ClusterColorHistogramCalculator:
   semantic_label: true
 
-RegionFilter:
+SuturoRegionFilter:
   enable_frustum_culling: false
   defaultRegions:
   - robocup_table
