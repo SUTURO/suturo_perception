@@ -31,24 +31,42 @@ def write_region_filter_yaml_from_manual(target_path='semantic_map.yaml'):
     region_bottom_offset = sem_map_yaml['surface_bottom_offset']
     region_top_offset = sem_map_yaml['surface_top_offset']
     region_height = region_bottom_offset + region_top_offset
-
-    rospy.loginfo("Getting TF pose of /environment/table_surface_center")
+    #Table 2 : 
+    rospy.loginfo("Getting TF pose of /iai_kitchen/table_2_surface_center")
     now = rospy.Time(0)
-    (trans, rot) = listener.lookupTransform("/map", "/environment/table_surface_center", now)
+    (trans, rot) = listener.lookupTransform("/map", "/iai_kitchen/table_2_surface_center", now)
+    pose = tf_to_region_matrix(trans, rot, region_bottom_offset, region_top_offset)
+    opencv_data['robocup_small_table'] = to_opencv_dict(sem_map_yaml['robocup_small_table'], pose, region_height)
+    opencv_data['names'].append('robocup_small_table')
+    #Table 3 : 
+    rospy.loginfo("Getting TF pose of /iai_kitchen/table_3_surface_center")
+    now = rospy.Time(0)
+    (trans, rot) = listener.lookupTransform("/map", "/iai_kitchen/table_3_surface_center", now)
     pose = tf_to_region_matrix(trans, rot, region_bottom_offset, region_top_offset)
     opencv_data['robocup_table'] = to_opencv_dict(sem_map_yaml['robocup_table'], pose, region_height)
     opencv_data['names'].append('robocup_table')
-
+    #Shelf : 
     shelf_region_frame_map = []
     num_floors = int(sem_map_yaml['robocup_shelf']['num_floors'])
     for n in range(0, num_floors):
-        shelf_region_frame_map.append(["robocup_shelf_" + str(n), "/environment/shelf_floor_" + str(n) + "_piece"])
+        shelf_region_frame_map.append(["robocup_shelf_" + str(n), "/iai_kitchen/shelf_floor_" + str(n) + "_piece"])
     rospy.loginfo("Getting TF data of " + str(num_floors) + " floors.")
     for (region, frame) in shelf_region_frame_map:
         opencv_data['names'].append(region)
         (trans, rot) = listener.lookupTransform("/map", frame, now)
         pose = tf_to_region_matrix(trans, rot, region_bottom_offset, region_top_offset)
         opencv_data[region] = to_opencv_dict(sem_map_yaml['robocup_shelf'], pose, region_height)
+    #Shelf 2 : 
+    shelf_region_frame_map = []
+    num_floors = int(sem_map_yaml['robocup_shelf_2']['num_floors'])
+    for n in range(0, num_floors):
+        shelf_region_frame_map.append(["robocup_shelf_2_" + str(n), "iai_kitchen/shelf_small_floor_" + str(n) + "_piece"])
+    rospy.loginfo("Getting TF data of " + str(num_floors) + " floors.")
+    for (region, frame) in shelf_region_frame_map:
+        opencv_data['names'].append(region)
+        (trans, rot) = listener.lookupTransform("/map", frame, now)
+        pose = tf_to_region_matrix(trans, rot, region_bottom_offset, region_top_offset)
+        opencv_data[region] = to_opencv_dict(sem_map_yaml['robocup_shelf_2'], pose, region_height)
 
     rospy.loginfo("Writing data to " + target_path)
     write_dict_to_ocv_yaml(opencv_data, target_path)
