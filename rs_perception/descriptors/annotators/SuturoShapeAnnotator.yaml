@@ -1,0 +1,8 @@
+annotator:
+  implementation: rs_SuturoShapeAnnotator
+  name: SuturoShapeAnnotator
+parameters:
+  test_param: 0.01
+capabilities:
+  inputs: {}
+  outputs: {}
