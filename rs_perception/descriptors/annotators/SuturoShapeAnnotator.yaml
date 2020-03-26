@@ -9,6 +9,7 @@ parameters:
   radius_max: 0.5
   confidence_min: 0.5
   eps_angle: 45.0
+  min_cluster_size: 1500
 capabilities:
   inputs: ['rs.scene.MergedHypothesis','rs.annotation.Geometry','rs.annotation.Plane','rs.pcl.NormalsCloud']
   outputs: ['rs.annotation.Shape']

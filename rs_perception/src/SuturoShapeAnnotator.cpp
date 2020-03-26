@@ -41,6 +41,7 @@ private:
   float param_radius_max = 0.1;
   float param_confidence_min = 0.5;
   float param_eps_angle = 0.1;
+  int param_min_cluster_size = 1000;
 
   // Visualisation:
   cv::Mat annotatorView;
@@ -203,6 +204,7 @@ public:
     ctx.extractValue("radius_max", param_radius_max);
     ctx.extractValue("confidence_min", param_confidence_min);
     ctx.extractValue("eps_angle", param_eps_angle);
+    ctx.extractValue("min_cluster_size", param_min_cluster_size);
 
     return UIMA_ERR_NONE;
   }
@@ -244,15 +246,21 @@ public:
 #pragma omp parallel for
     for(int idx = 0; idx < clusters.size(); ++idx) {
         // Convert cluster, save normals:
+        rs::ReferenceClusterPoints clusterRefPoints = ((rs::ReferenceClusterPoints)clusters[idx].points.get());
         pcl::PointIndicesPtr clusterIndices(new pcl::PointIndices());
         pcl::PointCloud<pcl::PointXYZRGBA>::Ptr clusterCloud(new pcl::PointCloud<pcl::PointXYZRGBA>);
         pcl::PointCloud<pcl::Normal>::Ptr clusterNormals(new pcl::PointCloud<pcl::Normal>);
 
-        rs::conversion::from(((rs::ReferenceClusterPoints)clusters[idx].points.get()).indices(), *clusterIndices);
+        rs::conversion::from(clusterRefPoints.indices(), *clusterIndices);
         for(int & indice : clusterIndices->indices)
         {
             clusterCloud->points.push_back(cloud_ptr->points[indice]);
             clusterNormals->points.push_back(normals_ptr->points[indice]);
+        }
+
+        if(clusterCloud->size() < param_min_cluster_size)
+        {
+            continue;
         }
 
         clusterCloud->width = clusterCloud->points.size();
@@ -329,6 +337,7 @@ public:
 
   void drawImageWithLock(cv::Mat &disp) override
   {
+#pragma omp critical
     disp = annotatorView.clone();
   }
 
