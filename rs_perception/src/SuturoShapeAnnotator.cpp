@@ -25,7 +25,7 @@
 #include <robosherlock/utils/time.h>
 
 // Debug
-//#define DEBUG
+#define DEBUG
 
 using namespace uima;
 
@@ -34,11 +34,13 @@ class SuturoShapeAnnotator : public DrawingAnnotator
 {
 private:
   // SAC Parameters:
-  int param_max_iterations;
-  float param_distance_threshold;
-  float param_distance_weight;
-  float param_radius_min;
-  float param_radius_max;
+  int param_max_iterations = 1000;
+  float param_distance_threshold = 0.03;
+  float param_distance_weight = 0.1;
+  float param_radius_min = 0;
+  float param_radius_max = 0.1;
+  float param_confidence_min = 0.5;
+  float param_eps_angle = 0.1;
 
   // Visualisation:
   cv::Mat annotatorView;
@@ -47,13 +49,19 @@ private:
   /***
    * Draws the result
    * @param rect Rectangle
+   * @param result_name Annotated class name
+   * @param confidence Result confidence
+   * @param color Rectangle- and text color
    */
   void drawResult(cv::Rect &rect, std::string &result_name, float confidence, cv::Scalar color){
-      cv::rectangle(annotatorView, rect, color, 2);
-      cv::putText(annotatorView, result_name, cv::Point(rect.x, rect.y - 10),
+#pragma omp critical
+      {
+        cv::rectangle(annotatorView, rect, color, 2);
+        cv::putText(annotatorView, result_name, cv::Point(rect.x, rect.y - 10),
               cv::FONT_HERSHEY_COMPLEX, 0.8, color, 1);
-      cv::putText(annotatorView, std::to_string(confidence), cv::Point(rect.x, rect.y + rect.height + 15),
+        cv::putText(annotatorView, std::to_string(confidence), cv::Point(rect.x, rect.y + rect.height + 20),
                   cv::FONT_HERSHEY_COMPLEX, 0.8, color, 1);
+      }
   }
 
   /***
@@ -66,7 +74,35 @@ private:
   float annotateBox(CAS &tcas, pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &clusterCloud,
                           pcl::PointCloud<pcl::Normal>::Ptr &clusterNormals)
   {
-      return 0;
+      pcl::ModelCoefficients::Ptr coefficients_plane(new pcl::ModelCoefficients);
+      pcl::PointIndices::Ptr planeInliers(new pcl::PointIndices);
+
+      // Init SAC:
+      pcl::SACSegmentationFromNormals<pcl::PointXYZRGBA, pcl::Normal> seg;
+      seg.setOptimizeCoefficients(true);
+      seg.setModelType(pcl::SACMODEL_NORMAL_PARALLEL_PLANE);
+      seg.setMethodType(pcl::SAC_RANSAC);
+      seg.setNormalDistanceWeight(param_distance_weight);
+      seg.setMaxIterations(param_max_iterations);
+      seg.setDistanceThreshold(param_distance_threshold);
+      seg.setEpsAngle(param_eps_angle * (M_PI / 180.0f));
+      seg.setAxis(Eigen::Vector3f(0.0, 0.0, 1.0));
+      seg.setInputCloud(clusterCloud);
+      seg.setInputNormals(clusterNormals);
+
+      // Segment and add relative number of inliers as confidence:
+      seg.segment(*planeInliers, *coefficients_plane);
+
+#ifdef DEBUG
+      outInfo("Size of cluster: " << clusterCloud->width);
+      outInfo("Number of BOX inliers: " << planeInliers->indices.size());
+#endif
+
+      if(planeInliers->indices.empty())
+      {
+          return 0;
+      }
+      return (float)planeInliers->indices.size() / clusterCloud->width;
   }
 
   /***
@@ -87,10 +123,10 @@ private:
       seg.setOptimizeCoefficients(true);
       seg.setModelType(pcl::SACMODEL_CYLINDER);
       seg.setMethodType(pcl::SAC_RANSAC);
-      seg.setNormalDistanceWeight(0.1);
-      seg.setMaxIterations(1000);
-      seg.setDistanceThreshold(0.03);
-      seg.setRadiusLimits(0, 0.1);
+      seg.setNormalDistanceWeight(param_distance_weight);
+      seg.setMaxIterations(param_max_iterations);
+      seg.setDistanceThreshold(param_distance_threshold);
+      seg.setRadiusLimits(param_radius_min, param_radius_max);
       seg.setInputCloud(clusterCloud);
       seg.setInputNormals(clusterNormals);
 
@@ -102,6 +138,10 @@ private:
       outInfo("Number of CYLINDER inliers: " << cylinderInliers->indices.size());
 #endif
 
+      if(cylinderInliers->indices.empty())
+      {
+          return 0;
+      }
       return (float)cylinderInliers->indices.size() / clusterCloud->width;
   }
 
@@ -121,14 +161,15 @@ private:
       // Init SAC:
       pcl::SACSegmentationFromNormals<pcl::PointXYZRGBA, pcl::Normal> seg;
       seg.setOptimizeCoefficients(true);
-      seg.setModelType(pcl::SACMODEL_SPHERE);
+      seg.setModelType(pcl::SACMODEL_NORMAL_SPHERE);
       seg.setMethodType(pcl::SAC_RANSAC);
-      seg.setNormalDistanceWeight(0.1);
-      seg.setMaxIterations(1000);
-      seg.setDistanceThreshold(0.03);
-      seg.setRadiusLimits(0, 0.1);
+      seg.setNormalDistanceWeight(param_distance_weight);
+      seg.setMaxIterations(param_max_iterations);
+      seg.setDistanceThreshold(param_distance_threshold);
+      seg.setRadiusLimits(param_radius_min, param_radius_max);
       seg.setInputCloud(clusterCloud);
       seg.setInputNormals(clusterNormals);
+      seg.setEpsAngle(param_eps_angle * (M_PI / 180.0f));
 
       // Segment and add relative number of inliers as confidence:
       seg.segment(*sphereInliers, *coefficients_sphere);
@@ -138,6 +179,10 @@ private:
       outInfo("Number of SPHERE inliers: " << sphereInliers->indices.size());
 #endif
 
+      if(sphereInliers->indices.empty())
+      {
+          return 0;
+      }
       return (float)sphereInliers->indices.size() / clusterCloud->width;
   }
 
@@ -150,27 +195,14 @@ public:
   TyErrorId initialize(AnnotatorContext &ctx) override
   {
     outInfo("initialize");
-    bool everythingInitialized = true;
 
-    if(everythingInitialized &= ctx.isParameterDefined("max_iterations")) {
-        ctx.extractValue("max_iterations", param_max_iterations);
-    }
-    if(everythingInitialized &= ctx.isParameterDefined("distance_threshold")) {
-        ctx.extractValue("distance_threshold", param_distance_threshold);
-    }
-    if(everythingInitialized &= ctx.isParameterDefined("distance_weight")) {
-        ctx.extractValue("distance_weight", param_distance_weight);
-    }
-    if(everythingInitialized &= ctx.isParameterDefined("radius_min")) {
-        ctx.extractValue("radius_min", param_radius_min);
-    }
-    if(everythingInitialized &= ctx.isParameterDefined("radius_max")) {
-        ctx.extractValue("radius_max", param_radius_max);
-    }
-
-    if(!everythingInitialized) {
-        outWarn("WARN: Not all values have been set. Please check the YAML configuration file.");
-    }
+    ctx.extractValue("max_iterations", param_max_iterations);
+    ctx.extractValue("distance_threshold", param_distance_threshold);
+    ctx.extractValue("distance_weight", param_distance_weight);
+    ctx.extractValue("radius_min", param_radius_min);
+    ctx.extractValue("radius_max", param_radius_max);
+    ctx.extractValue("confidence_min", param_confidence_min);
+    ctx.extractValue("eps_angle", param_eps_angle);
 
     return UIMA_ERR_NONE;
   }
@@ -196,7 +228,13 @@ public:
     cas.get(VIEW_COLOR_IMAGE, annotatorView);
 
     // Print Parameters:
-    //outInfo("Test param =  " << test_param);
+    outInfo("Parameters:\n" <<
+            "\nmax_iterations: " << param_max_iterations <<
+            "\ndistance_threshold: " << param_distance_threshold <<
+            "\ndistance_weight: " << param_distance_weight <<
+            "\nradius_min: " << param_radius_min <<
+            "\nradius_max: " << param_radius_max <<
+            "\nconfidence_min: " << param_confidence_min);
 
     // Process clusters:
     std::vector<rs::ObjectHypothesis> clusters;
@@ -233,6 +271,7 @@ public:
         float cylinderConfidence = annotateCylinder(tcas, clusterCloud, clusterNormals);
         float sphereConfidence = annotateSphere(tcas, clusterCloud, clusterNormals);
 
+        // Select shape with highest confidence:
         if(boxConfidence > cylinderConfidence && boxConfidence > sphereConfidence)
         {
             // It's a box:
@@ -255,17 +294,26 @@ public:
             result_name = "sphere";
         }
 
+        // Check confidence:
+        if(result_confidence >= param_confidence_min)
+        {
+            // Add annotation with highest confidence:
+            rs::Shape result = rs::create<rs::Shape>(tcas);
+            result.shape.set(result_name);
+            result.confidence.set(result_confidence);
+            clusters[idx].annotations.append(result);
+        }
+        else
+        {
+            // Confidence is to low:
+            result_color = cv::Scalar(130, 130, 130);
+        }
+
         // Visualisation:
         rs::ImageROI imageRoi(clusters[idx].rois());
         cv::Rect rect;
         rs::conversion::from(imageRoi.roi(), rect);
         drawResult(rect, result_name, result_confidence, result_color);
-
-        // Add annotation with highest confidence:
-        rs::Shape result = rs::create<rs::Shape>(tcas);
-        result.shape.set(result_name);
-        result.confidence.set(result_confidence);
-        clusters[idx].annotations.append(result);
 
 #ifdef DEBUG
         outInfo("Selected shape: " << result_name << " (confidence: " << result_confidence <<")");

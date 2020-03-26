@@ -2,7 +2,13 @@ annotator:
   implementation: rs_SuturoShapeAnnotator
   name: SuturoShapeAnnotator
 parameters:
-  test_param: 0.01
+  max_iterations: 4000
+  distance_threshold: 0.05
+  distance_weight: 0.1
+  radius_min: 0.0
+  radius_max: 0.5
+  confidence_min: 0.5
+  eps_angle: 45.0
 capabilities:
-  inputs: {}
-  outputs: {}
+  inputs: ['rs.scene.MergedHypothesis','rs.annotation.Geometry','rs.annotation.Plane','rs.pcl.NormalsCloud']
+  outputs: ['rs.annotation.Shape']
