@@ -6,7 +6,7 @@ git clone https://github.com/SUTURO/suturo_resources.git &&
 git clone https://github.com/evankapi/rs_hsrb_perception.git -b suturo20 &&   
 git clone https://github.com/RoboSherlock/robosherlock.git --recursive &&   
 git clone https://github.com/RoboSherlock/rs_resources.git &&
-git clone https://github.com/bbferka/rs_addons.git -b release_preps
+git clone https://github.com/Jastock/rs_addons.git
 ```
 
 #### Start pipelines and action server:
