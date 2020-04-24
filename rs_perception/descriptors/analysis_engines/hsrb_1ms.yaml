@@ -9,7 +9,7 @@ fixedflow:
   - PointCloudClusterExtractor
   - ClusterColorHistogramCalculator
   - Cluster3DGeometryAnnotator
-  - PrimitiveShapeAnnotator
+  - SuturoShapeAnnotator
   - RegionAnnotator
   - CaffeAnnotator
   - KnnAnnotator
