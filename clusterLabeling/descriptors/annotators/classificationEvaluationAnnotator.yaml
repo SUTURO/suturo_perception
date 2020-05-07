@@ -1,0 +1,8 @@
+annotator:
+  implementation: rs_classificationEvaluationAnnotator
+  name: classificationEvaluationAnnotator
+parameters:
+  test_param: 0.01
+capabilities:
+  inputs: {}
+  outputs: {}
