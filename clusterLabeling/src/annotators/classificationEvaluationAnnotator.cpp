@@ -19,8 +19,9 @@ using namespace uima;
 class classificationEvaluationAnnotator : public Annotator
 {
 private:
-  float test_param;
-    cv::Mat current_image;
+  cv::Mat current_image;
+  std::string label_file_path;
+  //rapidjson document holding the json Object
   rapidjson::Document document;
 
   int framecounter = 0;
@@ -33,8 +34,9 @@ public:
   TyErrorId initialize(AnnotatorContext &ctx)
   {
     outInfo("initialize");
-    ctx.extractValue("test_param", test_param);
-    std::ifstream file("/home/janf/suturo/src/clusterLabeling/labeling/table_view_1_labeling.json");
+    ctx.extractValue("label_file_path", label_file_path);
+    //loading the json file, saving it into a string and parsing it into json object with rapidjson
+    std::ifstream file(label_file_path);
     std::string content(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
     document.Parse(content.c_str());
 
@@ -63,16 +65,22 @@ public:
       outInfo("Found " << clusters.size() << " clusters.");
 
       outInfo("Frame: " << framecounter);
+      //only use frame for accuracy calculation if clusters is not empty. This enables leaving frames out.
       if (!document["clusterLabeling"][framecounter]["clusters"].Empty()) {
 
+          //Iterating though the found clusters and getting the classification.
           for (int i = 0; i < clusters.size(); i++) {
               std::vector<rs::Classification> classResult;
               clusters[i].annotations.filter(classResult);
               outInfo("Class result size is: " << classResult.size());
+
+              /*Check if there is a classification result. classResult.size() == 0 happens if the classifier filters by
+               * confidence.
+               */
               if (classResult.size() > 0) {
                   outInfo("Comparing " << classResult[0].classname.get() << " and "
                                        << document["clusterLabeling"][framecounter]["clusters"][i]["label"].GetString());
-
+                  //count correctly classified samples.
                   if (classResult[0].classname.get().compare(
                           document["clusterLabeling"][framecounter]["clusters"][i]["label"].GetString()) == 0) {
                       outInfo("Correct classification.");
@@ -82,11 +90,12 @@ public:
                       outInfo("Incorrect classification.");
                       total_samples++;
                   }
-              } else {
+              } else {  //consider sample as wrongly classified, if confidence was not high enough in KNN.
                   total_samples++;
               }
 
           }
+          //calculate accuracy.
           accuracy = ((float) correct_samples) / ((float) total_samples);
           outInfo("Current accuracy is " << (accuracy * 100) << "%.");
       }

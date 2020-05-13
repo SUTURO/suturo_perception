@@ -19,13 +19,14 @@ using namespace uima;
 class clusterLabeler : public DrawingAnnotator
 {
 private:
-  float test_param;
-    int argc = 0;
-    char **argv = NULL;
-    //CV Matrix to hold an image
-    cv::Mat current_image;
+    //These are fields used for the GUI. Comment in if you want to use it.
+    //int argc = 0;
+    //char **argv = NULL;
     //guiWrapper* wrapper;
     //std::thread gui;
+
+    //CV Matrix to hold an image
+    cv::Mat current_image;
 
 public:
 
@@ -35,7 +36,7 @@ public:
   TyErrorId initialize(AnnotatorContext &ctx)
   {
       outInfo("initialize");
-      ctx.extractValue("test_param", test_param);
+      //Initializes a new guiWrapper and runs the GUI application in new thread.
       //wrapper = new guiWrapper(argc, argv);
       //gui = std::thread(&guiWrapper::run, wrapper);
       //outInfo("spawned window");
@@ -75,15 +76,15 @@ public:
           rs::conversion::from(cluster_roi.roi.get(), rectangle);
           //Draw the numbering for the cluster
           drawCluster(current_image, rectangle, std::to_string((cluster - clusters.begin())));
-          //wrapper->visualize(current_image.clone());
-          //QPixmap map = QPixmap::fromImage(QImage((uchar*) current_image.data, current_image.cols, current_image.rows, current_image.step, QImage::Format_RGB888));
-          //w->setPixmap(map);
+          //Here the visualizing method of the guiWrapper would be called.
       }
 
       outInfo("took: " << clock.getTime() << " ms.");
       return UIMA_ERR_NONE;
   }
-
+  /*
+   * Draws the rectangle into the image and labels it with the number.
+   */
   static void drawCluster(cv::Mat input, cv::Rect rectangle, const std::string &label){
       std::stringstream ss;
       ss<<label;

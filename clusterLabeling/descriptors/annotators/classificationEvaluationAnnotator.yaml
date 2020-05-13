@@ -2,7 +2,7 @@ annotator:
   implementation: rs_classificationEvaluationAnnotator
   name: classificationEvaluationAnnotator
 parameters:
-  test_param: 0.01
+  label_file_path: /home/janf/suturo/src/suturo_perception/clusterLabeling/labeling/table_view_1_labeling.json
 capabilities:
   inputs: {}
   outputs: {}

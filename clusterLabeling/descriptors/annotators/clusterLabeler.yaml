@@ -1,8 +1,6 @@
 annotator:
   implementation: rs_clusterLabeler
   name: clusterLabeler
-parameters:
-  test_param: 0.01
 capabilities:
   inputs: {}
   outputs: {}

@@ -1,6 +1,3 @@
-//
-// Created by janf on 02.05.20.
-//
 
 #ifndef CLUSTERLABELING_GUIWRAPPER_H
 #define CLUSTERLABELING_GUIWRAPPER_H
