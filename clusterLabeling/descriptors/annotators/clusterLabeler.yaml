@@ -1,0 +1,6 @@
+annotator:
+  implementation: rs_clusterLabeler
+  name: clusterLabeler
+capabilities:
+  inputs: {}
+  outputs: {}
