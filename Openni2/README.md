@@ -1,13 +1,14 @@
-Install Openni2 with the shell script or manually. 
+### OpenNI 2 
+OpenNI 2 is the driver for the Xtion Pro live. It can be installt using the shell script "Openni2_Install" or manually with the following commands
 
-Download the Main Programm : 
-
+### Download the main software : 
+```
 Openni2_camera : sudo apt-get install ros-kinetic-openni2-camera
 
 Openni2_launch : sudo apt-get install ros-kinetic-openni2-launch
-
-Download Requirements : 
-
+```
+### Download Requirements : 
+```
 GCC 4.x : sudo apt-get install g++ 
 
 Python 2.6+/3.x : sudo apt-get install python 
@@ -21,14 +22,15 @@ JDK 8.0 :  sudo apt-get install openjdk-8-jdk
 Doxygen : sudo apt-get install doxygen 
 
 GraphViz : sudo apt-get install graphviz 
+```
 
-Download Calibration file (Not Required): 
-
+### Optional download Calibration file (Not Required) : 
+```
+Github : https://github.com/introlab/rtabmap_ros/blob/master/launch/calibration/rgb_PS1080_PrimeSense.yaml
+```
 Create a new folder in .ros name camera_info and put in the calibration file. 
 
-Github : https://github.com/introlab/rtabmap_ros/blob/master/launch/calibration/rgb_PS1080_PrimeSense.yaml
-
-Changes on the package : 
+### Necessary changes on the package : 
 
 Get the package location with : rospack find openni2_lauch 
 
