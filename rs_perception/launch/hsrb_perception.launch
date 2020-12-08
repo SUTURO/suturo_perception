@@ -1,3 +1,0 @@
-<launch>
-  <node name="perception_server" pkg="actionserver" type="perception_server" output="screen" />
-</launch>
