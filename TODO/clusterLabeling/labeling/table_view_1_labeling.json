@@ -1,0 +1,87 @@
+{
+    "clusterLabeling": [
+        {
+            "frame": 0,
+            "clusters": []
+        },
+        {
+            "frame": 1,
+            "clusters": [
+                {
+                    "number": 0,
+                    "label": "Pringles_Original"
+                },
+                {
+                    "number": 1,
+                    "label": "Feurich_Stapel_Chips_Sour_Cream_Onion"
+                },
+                {
+                    "number": 2,
+                    "label": "Pringles_Original"
+                },
+                {
+                    "number": 3,
+                    "label": "Junge_Erbsen_mit_Moehrchen"
+                },
+                {
+                    "number": 4,
+                    "label": "Vitalis_Shake_Balance_Erdbeer"
+                }
+            ]
+        },
+        {
+            "frame": 2,
+            "clusters": [
+                {
+                    "number": 0,
+                    "label": "Pringles_Original"
+                },
+                {
+                    "number": 1,
+                    "label": "Pringles_Original"
+                },
+                {
+                    "number": 2,
+                    "label": "Feurich_Stapel_Chips_Sour_Cream_Onion"
+                },
+                {
+                    "number": 3,
+                    "label": "Junge_Erbsen_mit_Moehrchen"
+                },
+                {
+                    "number": 4,
+                    "label": "Vitalis_Shake_Balance_Erdbeer"
+                }
+            ]
+        },
+        {
+            "frame": 3,
+            "clusters": [
+                {
+                    "number": 0,
+                    "label": "Pringles_Original"
+                },
+                {
+                    "number": 1,
+                    "label": "Feurich_Stapel_Chips_Sour_Cream_Onion"
+                },
+                {
+                    "number": 2,
+                    "label": "Pringles_Original"
+                },
+                {
+                    "number": 3,
+                    "label": "Junge_Erbsen_mit_Moehrchen"
+                },
+                {
+                    "number": 4,
+                    "label": "Vitalis_Shake_Balance_Erdbeer"
+                }
+            ]
+        }
+
+    ]
+}
+
+
+

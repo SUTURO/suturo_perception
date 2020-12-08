@@ -1,0 +1,14 @@
+ae:
+  name: demo_from_storage
+fixedflow:
+  - Trigger
+  - CollectionReaderSuturo
+  - ImagePreprocessor
+  - PointCloudFilter
+  - NormalEstimator
+  - PlaneAnnotator
+  - ImageSegmentationAnnotator
+  - PointCloudClusterExtractor
+  - ClusterMerger
+CollectionReader:
+  camera_config_files: ['config_mongo_hsrb.ini']

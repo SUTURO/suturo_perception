@@ -1,0 +1,3 @@
+<launch>
+  <node name="perception_server" pkg="suturo_perception" type="perception_server" output="screen" />
+</launch>
