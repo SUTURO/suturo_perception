@@ -2,7 +2,7 @@ ae:
   name: hsrb_1ms
 fixedflow:
   - CollectionReader
-  - ImagePreprocessor  
+  - ImagePreprocessor
   - SuturoRegionFilter
   - NormalEstimator
   - PlaneAnnotator
@@ -13,7 +13,7 @@ fixedflow:
   - RegionAnnotator
   - CaffeAnnotator
   - KnnAnnotator
- 
+
 CollectionReader:
   camera_config_files: ['config_hsrb.ini']
 
@@ -35,10 +35,10 @@ ClusterColorHistogramCalculator:
 SuturoRegionFilter:
   enable_frustum_culling: false
   defaultRegions:
-  - robocup_table
-  - robocup_shelf_0
-  - robocup_shelf_1
-  - robocup_shelf_2
-  - robocup_shelf_3
-  - robocup_shelf_4
+    - robocup_table
+    - robocup_shelf_0
+    - robocup_shelf_1
+    - robocup_shelf_2
+    - robocup_shelf_3
+    - robocup_shelf_4
   semantic_map_definition: "suturo_semantic_map.yaml"

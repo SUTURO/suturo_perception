@@ -23,7 +23,7 @@ void ExtractObjectInfoServer::execute(const suturo_perception_msgs::ExtractObjec
 }
 
 ExtractObjectInfoServer::ExtractObjectInfoServer(std::string name) :
-PerceptionServer(name, "hsrb_1ms"),
+PerceptionServer(name, "hsrb"),
 server(nh, name, boost::bind(&ExtractObjectInfoServer::execute, this, _1), false)
 {
     server.start();

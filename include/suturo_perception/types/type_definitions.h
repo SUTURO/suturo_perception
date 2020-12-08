@@ -4,5 +4,7 @@
 #ifndef __SUTURO_PERCEPTION_TYPE_DEFINITIONS_H__
 #define __SUTURO_PERCEPTION_TYPE_DEFINITIONS_H__
 
+#define SUTURO_PERCEPTION_PROPERTY_BOUNDINGBOX "suturo_perception.property.BoundingBox"
+#define SUTURO_PERCEPTION_PROPERTY_REGION "suturo_perception.property.Region"
 
 #endif /* __SUTURO_PERCEPTION_TYPE_DEFINITIONS_H__ */

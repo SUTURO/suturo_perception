@@ -5,6 +5,7 @@
 #define __SUTURO_PERCEPTION_ALL_TYPES_H__
 
 #include <suturo_perception/types/type_definitions.h>
+#include <suturo_perception/types/property_types.h>
 
 
 #endif /* __SUTURO_PERCEPTION_ALL_TYPES_H__ */

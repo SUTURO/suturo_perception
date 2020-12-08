@@ -21,7 +21,7 @@
 #include <suturo_perception_msgs/ExtractPlaneInfoAction.h>
 #include <suturo_perception_msgs/ExtractObjectInfoInRegionAction.h>
 
-#include <rs_hsrb_perception/SuturoProcessManager.h>
+#include <suturo_perception/SuturoProcessManager.h>
 
 #define EOI_NAME        "perception_actionserver"
 #define EPI_NAME        "perception_actionserver_plane"

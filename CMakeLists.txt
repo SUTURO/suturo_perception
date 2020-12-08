@@ -6,13 +6,16 @@ find_package(catkin REQUIRED actionlib
   roscpp
   rospy
   std_msgs
+  geometry_msgs
   suturo_perception_msgs
   robosherlock
   robosherlock_msgs
   rapidjson_ros
   visualization_msgs
-  rs_hsrb_perception
   image_transport)
+
+# OpenCV 3.3+
+find_package(OpenCV REQUIRED)
 
 if(OPENMP_FOUND)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
@@ -39,7 +42,7 @@ configure_file(${RS_PROJECT_CONFIG} ${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}_
 find_include_dirs(RS_INCLUDE_DIRS_LIST)
 catkin_package(
    CFG_EXTRAS ${PROJECT_NAME}_config.cmake
-   CATKIN_DEPENDS robosherlock actionlib_msgs suturo_perception_msgs robosherlock_msgs rapidjson_ros rs_hsrb_perception
+   CATKIN_DEPENDS robosherlock actionlib_msgs suturo_perception_msgs robosherlock_msgs rapidjson_ros
    )
 ################################################################################
 ## Package dependencies                                                       ##
@@ -53,11 +56,7 @@ catkin_package(
 ################################################################################
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(
-        ${RS_INCLUDE_DIRS_LIST}
-        ${catkin_INCLUDE_DIRS}
-	${Boost_INCLUDE_DIRS}
-        )
+include_directories(${RS_INCLUDE_DIRS_LIST} ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 ################################################################################
 ## Update analysis engines, typesystem and include all relevant files         ##
 ################################################################################
@@ -71,41 +70,46 @@ find_additional_files()
 #If you want to divide your projects into subprojects include the subdirectories
 #each containing a CMakeLists.txt here
 #add_subdirectory(src/xxx)
-find_library(RS_SUTURO rs_hsrb_perception)
 
+# Utilities
 add_library(${PROJECT_NAME}
 		src/server/PerceptionServer.cpp
 		include/suturo_perception/PerceptionServer.h
 		src/server/ExtractObjectInfoServer.cpp
-		src/server/ExtractPlaneInfoServer.cpp)
-target_link_libraries(${PROJECT_NAME} 
-	${RS_SUTURO}
-	${catkin_LIBRARIES}
-)
+		src/server/ExtractPlaneInfoServer.cpp
+		src/utils/SuturoProcessManager.cpp
+		src/utils/suturo_conversion.cpp
+		include/suturo_perception/suturo_conversion.h)
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
 # Perception Action Server
 add_executable(perception_server src/server/perception_server.cpp)
-target_link_libraries(perception_server
-	${RS_SUTURO}
-	${catkin_LIBRARIES}
-	${PROJECT_NAME}
-)
+target_link_libraries(perception_server ${RS_SUTURO} ${catkin_LIBRARIES} ${PROJECT_NAME})
 
 # Object Action client (for testing purposes)
 add_executable(ExtractObjectInfoClient src/server/ExtractObjectInfoClient.cpp)
-target_link_libraries(ExtractObjectInfoClient
-	${RS_SUTURO}
-	${catkin_LIBRARIES}
-)
+target_link_libraries(ExtractObjectInfoClient ${RS_SUTURO} ${catkin_LIBRARIES})
 
 # Plane Action client (for testing purposes)
 add_executable(ExtractPlaneInfoClient src/server/ExtractPlaneInfoClient.cpp)
-target_link_libraries(ExtractPlaneInfoClient
-	${RS_SUTURO}
-	${catkin_LIBRARIES}
-)
+target_link_libraries(ExtractPlaneInfoClient ${RS_SUTURO} ${catkin_LIBRARIES})
 
 # Suturo Shape Annotator
 rs_add_library(rs_SuturoShapeAnnotator src/annotators/SuturoShapeAnnotator.cpp)
 target_link_libraries(rs_SuturoShapeAnnotator ${catkin_LIBRARIES})
 
+# Suturo Classifier
+rs_add_library(rs_SuturoClassifier src/annotators/SuturoClassifier.cpp)
+target_link_libraries(rs_SuturoClassifier ${PROJECT_NAME} ${OpenCV_LIBS})
+
+# Save Cluster Clouds and Images
+rs_add_library(rs_SaveClusterCloudsAndImages src/annotators/SaveClusterCloudsAndImages.cpp)
+target_link_libraries(rs_SaveClusterCloudsAndImages ${catkin_LIBRARIES})
+
+# Region Annotator
+rs_add_library(rs_RegionAnnotator src/annotators/RegionAnnotator.cpp)
+target_link_libraries(rs_RegionAnnotator ${catkin_LIBRARIES})
+
+# Suturo Region Filter
+rs_add_library(rs_SuturoRegionFilter src/annotators/SuturoRegionFilter.cpp)
+target_link_libraries(rs_SuturoRegionFilter ${catkin_LIBRARIES} ${YAML_CPP_LIBRARIES})

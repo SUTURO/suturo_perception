@@ -8,7 +8,7 @@
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
   <maintainer email="evan@uni-bremen.de">Evan Kapitzke</maintainer>
-
+  <author email="leo_pan@uni-bremen.de">Leonidas Paniago</author>
 
   <!-- One license tag required, multiple allowed, one license per tag -->
   <!-- Commonly used license strings: -->
@@ -30,14 +30,13 @@
   <depend>actionlib_msgs</depend>
   <depend>message_generation</depend>
   <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
   <depend>suturo_perception_msgs</depend>
   <depend>rapidjson_ros</depend>
   <depend>robosherlock</depend>
   <depend>robosherlock_msgs</depend>
-  <depend>rs_hsrb_perception</depend>
   <depend>image_transport</depend>
   <depend>visualization_msgs</depend>
-
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
