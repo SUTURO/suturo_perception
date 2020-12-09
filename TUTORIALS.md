@@ -12,3 +12,23 @@
 * you can look up the names of your available databases in your MongoDB directory 
   * you can find out where it is stored by looking at dbpath in /etc/mongodb.conf 
 
+# Save Clusters for Klassifikation 
+
+## Record Pictures 
+
+* First set the Recording Plane with : 
+* rosrun robosherlock run _ae:=estimate_plane _vis:=true 
+
+* Then place the Objekt in the Turntable and run : 
+* rosrun robosherlock run _ae:=save_images _vis:=true 
+* All Pictures are saved in the folder "data"
+
+# Feature Extraction 
+
+## Extract Feaures from Picture set 
+
+* Run 
+* rosrun rs_addons featureExtractor -s your_split_file -f BVLC_REF -o your_extracted_features_folder
+
+
+
