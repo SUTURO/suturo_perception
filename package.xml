@@ -37,6 +37,9 @@
   <depend>robosherlock_msgs</depend>
   <depend>image_transport</depend>
   <depend>visualization_msgs</depend>
+  <!-- Needed for classification -->
+  <exec_depend>rs_addons</exec_depend>
+  <exec_depend>rs_resources</exec_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
