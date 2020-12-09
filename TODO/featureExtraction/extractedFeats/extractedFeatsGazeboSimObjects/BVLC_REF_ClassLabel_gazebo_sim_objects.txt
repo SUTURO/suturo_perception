@@ -1,4 +1,0 @@
-Banana:1
-CokeCan:2
-OrangeSoda:3
-PringlesYellow:4

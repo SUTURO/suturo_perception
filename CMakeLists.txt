@@ -17,6 +17,11 @@ find_package(catkin REQUIRED actionlib
 # OpenCV 3.3+
 find_package(OpenCV REQUIRED)
 
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC OFF)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 if(OPENMP_FOUND)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
@@ -81,6 +86,14 @@ add_library(${PROJECT_NAME}
 		src/utils/suturo_conversion.cpp
 		include/suturo_perception/suturo_conversion.h)
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
+
+#Cluster Labeler 
+rs_add_library(rs_clusterLabeler src/annotators/clusterLabeler.cpp)
+target_link_libraries(rs_clusterLabeler ${catkin_LIBRARIES} ${PROJECT_NAME})
+
+#Classification Evaluation 
+rs_add_library(rs_classificationEvaluationAnnotator src/annotators/classificationEvaluationAnnotator.cpp)
+target_link_libraries(rs_classificationEvaluationAnnotator ${catkin_LIBRARIES})
 
 # Perception Action Server
 add_executable(perception_server src/server/perception_server.cpp)
