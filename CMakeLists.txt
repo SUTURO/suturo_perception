@@ -87,14 +87,6 @@ add_library(${PROJECT_NAME}
 		include/suturo_perception/suturo_conversion.h)
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
-#Cluster Labeler 
-rs_add_library(rs_clusterLabeler src/annotators/clusterLabeler.cpp)
-target_link_libraries(rs_clusterLabeler ${catkin_LIBRARIES} ${PROJECT_NAME})
-
-#Classification Evaluation 
-rs_add_library(rs_classificationEvaluationAnnotator src/annotators/classificationEvaluationAnnotator.cpp)
-target_link_libraries(rs_classificationEvaluationAnnotator ${catkin_LIBRARIES})
-
 # Perception Action Server
 add_executable(perception_server src/server/perception_server.cpp)
 target_link_libraries(perception_server ${RS_SUTURO} ${catkin_LIBRARIES} ${PROJECT_NAME})
@@ -106,6 +98,14 @@ target_link_libraries(ExtractObjectInfoClient ${RS_SUTURO} ${catkin_LIBRARIES})
 # Plane Action client (for testing purposes)
 add_executable(ExtractPlaneInfoClient src/server/ExtractPlaneInfoClient.cpp)
 target_link_libraries(ExtractPlaneInfoClient ${RS_SUTURO} ${catkin_LIBRARIES})
+
+# Cluster Labeler 
+rs_add_library(rs_clusterLabeler src/annotators/clusterLabeler.cpp)
+target_link_libraries(rs_clusterLabeler ${catkin_LIBRARIES} ${PROJECT_NAME})
+
+# Classification Evaluation 
+rs_add_library(rs_classificationEvaluationAnnotator src/annotators/classificationEvaluationAnnotator.cpp)
+target_link_libraries(rs_classificationEvaluationAnnotator ${catkin_LIBRARIES})
 
 # Suturo Shape Annotator
 rs_add_library(rs_SuturoShapeAnnotator src/annotators/SuturoShapeAnnotator.cpp)
