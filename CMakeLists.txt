@@ -89,15 +89,15 @@ target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
 # Perception Action Server
 add_executable(perception_server src/server/perception_server.cpp)
-target_link_libraries(perception_server ${RS_SUTURO} ${catkin_LIBRARIES} ${PROJECT_NAME})
+target_link_libraries(perception_server ${catkin_LIBRARIES} ${PROJECT_NAME})
 
 # Object Action client (for testing purposes)
 add_executable(ExtractObjectInfoClient src/server/ExtractObjectInfoClient.cpp)
-target_link_libraries(ExtractObjectInfoClient ${RS_SUTURO} ${catkin_LIBRARIES})
+target_link_libraries(ExtractObjectInfoClient ${catkin_LIBRARIES} ${PROJECT_NAME})
 
 # Plane Action client (for testing purposes)
 add_executable(ExtractPlaneInfoClient src/server/ExtractPlaneInfoClient.cpp)
-target_link_libraries(ExtractPlaneInfoClient ${RS_SUTURO} ${catkin_LIBRARIES})
+target_link_libraries(ExtractPlaneInfoClient ${catkin_LIBRARIES} ${PROJECT_NAME})
 
 # Cluster Labeler 
 rs_add_library(rs_clusterLabeler src/annotators/clusterLabeler.cpp)
