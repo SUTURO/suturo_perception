@@ -1,6 +1,0 @@
-Banana:1
-Extra_Professional_White_Citrus:2
-Mueller_Reine_Butter_Milch:3
-Tasse:4
-Vitalis_Shake_Balance_Erdbeer:5
-Magico_Kafffe_typ_Family_Cappuccino:6

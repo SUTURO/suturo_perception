@@ -1,0 +1,27 @@
+ae:
+  name: save_images
+fixedflow:
+- CollectionReader
+- ImagePreprocessor
+- PointCloudFilter
+- PlaneAnnotator
+- PointCloudClusterExtractor
+#- ClusterMerger
+- SaveClusterCloudsAndImages
+
+CollectionReader:
+  camera_config_files: ['config_hsrb.ini']
+
+
+PointCloudFilter:
+  minX: -0.12
+  maxX: 0.32
+  minY: -0.52
+  maxY: 0.52
+  minZ: 0.0
+  maxZ: 0.82
+  transform_cloud: false
+
+
+SaveClusterCloudsAndImages:
+  objectName: 'pepper'

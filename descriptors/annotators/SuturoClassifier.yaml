@@ -1,0 +1,12 @@
+annotator:
+  implementation: rs_SuturoClassifier
+parameters:
+  trainedModel: "/home/suturo/robocup/perception_ws/src/suturo_perception/resources/bvlc_reference_caffenet.caffemodel"
+  modelConfig: "/home/suturo/robocup/perception_ws/src/suturo_perception/resources/bvlc.prototxt"
+  scaleFactor: 1.0
+  swapRB: false
+  inpWidth: 224
+  inpHeight: 224
+capabilities:
+  inputs: {}
+  outputs: {}
