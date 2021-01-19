@@ -1,0 +1,20 @@
+- git:
+    local-name: suturo_perception
+    uri: https://github.com/SUTURO/suturo_perception.git
+    version: master
+
+- git:
+    local-name: robosherlock
+    uri: https://github.com/RoboSherlock/robosherlock.git
+    version: master
+
+- git:
+    local-name: rs_resources
+    uri: https://github.com/RoboSherlock/rs_resources.git
+    version: master
+
+- git:
+    local-name: rs_addons
+    uri: https://github.com/Jastock/rs_addons.git
+    version: master
+
