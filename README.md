@@ -4,7 +4,7 @@ You can execute the following command to clone the dependencies of this package:
 ```
 git clone https://github.com/SUTURO/suturo_resources.git &&   
 git clone https://github.com/RoboSherlock/robosherlock.git --recursive &&   
-git clohe ttps://github.com/Paniago82/rs_resources.git &&
+git clohe https://github.com/Paniago82/rs_resources.git &&
 git clone https://github.com/Jastock/rs_addons.git
 ```
 
