@@ -10,7 +10,7 @@
 
 - git:
     local-name: rs_resources
-    uri: https://github.com/RoboSherlock/rs_resources.git
+    uri: https://github.com/Paniago82/rs_resources.git
     version: master
 
 - git:
