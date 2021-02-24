@@ -1,15 +1,24 @@
 ae:
   name: hsrb_planes
 fixedflow:
-- CollectionReader
-- ImagePreprocessor
-- PointCloudFilter
-- NormalEstimator
-- PlaneAnnotator
-- PointCloudClusterExtractor
+  - CollectionReader
+  - ImagePreprocessor
+  - SuturoRegionFilter
+  - NormalEstimator
+  - PlaneAnnotator
+  - PointCloudClusterExtractor
+  - ClusterColorHistogramCalculator
+  - Cluster3DGeometryAnnotator
+  - SuturoShapeAnnotator
+  - RegionAnnotator
+  - CaffeAnnotator
+  - KnnAnnotator
 
 CollectionReader:
   camera_config_files: ['config_hsrb.ini']
+
+PlaneAnnotator:
+  min_plane_inliers: 2500
 
 PointCloudFilter:
   minX: -1.0
@@ -20,16 +29,16 @@ PointCloudFilter:
   maxZ: 2.0
   transform_cloud: true
 
-RegionFilter:
+ClusterColorHistogramCalculator:
+  semantic_label: true
+
+SuturoRegionFilter:
   enable_frustum_culling: false
   defaultRegions:
-  - robocup_shelf_0
-  - robocup_shelf_1
-  - robocup_shelf_2
-  - robocup_shelf_3
-  - robocup_shelf_4
-  annotate: true
-
-PlaneAnnotator:
-  horizontal: false
-  min_plane_inliers: 15000
+    - robocup_table
+    - robocup_shelf_0
+    - robocup_shelf_1
+    - robocup_shelf_2
+    - robocup_shelf_3
+    - robocup_shelf_4
+  semantic_map_definition: "suturo_semantic_map.yaml"
