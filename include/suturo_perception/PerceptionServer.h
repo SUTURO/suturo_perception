@@ -19,7 +19,6 @@
 #include <suturo_perception_msgs/ExtractObjectInfoAction.h>
 #include <suturo_perception_msgs/ObjectDetectionData.h>
 #include <suturo_perception_msgs/ExtractPlaneInfoAction.h>
-#include <suturo_perception_msgs/ExtractObjectInfoInRegionAction.h>
 
 #include <suturo_perception/SuturoProcessManager.h>
 
