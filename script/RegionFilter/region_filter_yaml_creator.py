@@ -75,9 +75,13 @@ def write_region_filter_yaml_from_manual(source, target_path):
 
     # Read offsets
     global world_offset_x, world_offset_y, world_offset_rot_z
-    world_offset_x = sem_map_yaml['world_offset']['X']
-    world_offset_y = sem_map_yaml['world_offset']['Y']
-    world_offset_rot_z = sem_map_yaml['world_offset']['zrot']
+    if 'world_offset' in sem_map_yaml:
+        if 'X' in sem_map_yaml['world_offset']:
+            world_offset_x = sem_map_yaml['world_offset']['X']
+        if 'Y' in sem_map_yaml['world_offset']:
+            world_offset_y = sem_map_yaml['world_offset']['Y']
+        if 'zrot' in sem_map_yaml['world_offset']:
+            world_offset_rot_z = sem_map_yaml['world_offset']['zrot']
 
     # Create Region
     for element in element_list:
