@@ -149,7 +149,7 @@ if __name__ == '__main__':
                         type=str, default="semantic_map.yaml")
     parser.add_argument("--prefix", help="Element prefix z.B iai_kitchen",
                         type=str, default="iai_kitchen")
-    parser.add_argument("--elements", help="Elements containing the regions",
+    parser.add_argument("--elements", help="Elements containing the regions z.B 'tables,shelves'",
                         type=csv_list, default=["tables", "shelves"])
     args = parser.parse_args()
 
