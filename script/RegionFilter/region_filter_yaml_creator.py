@@ -28,9 +28,7 @@ def create_element(listener, object_info, object_type, suffix):
 
     rospy.loginfo("Getting TF pose of /" + prefix + "/" + suffix + "_surface_center")
     now = rospy.Time(0)
-    # trans = [0, 0, 0]
-    # rot = [0.000, 0.000, 0.0, 0.0]
-    (trans, rot) = listener.lookupTransform("/map", "/" + prefix + "/" + suffix + "_surface_center", now)
+    (trans, rot) = listener.lookupTransform("/map", prefix + suffix + "_surface_center", now)
     pose = tf_to_region_matrix(trans, rot)
     opencv_data[suffix] = to_opencv_dict(object_info, object_type, pose)
     opencv_data['names'].append(suffix)
@@ -42,15 +40,12 @@ def create_element_with_floors(listener, object_info, object_type, suffix):
     shelf_region_frame_map = []
     num_floors = int(object_info['number_of_floors'])
     for n in range(0, num_floors):
-        shelf_region_frame_map.append([suffix + "_floor_" + str(n),
-                                       "/" + prefix + "/" + suffix + "_floor_" + str(n) + "_piece"])
+        shelf_region_frame_map.append([suffix + "_floor_" + str(n), prefix + suffix + "_floor_" + str(n) + "_piece"])
 
-    rospy.loginfo("Getting TF data of " + suffix + " floor " + str(num_floors) + ".")
     for (region, frame) in shelf_region_frame_map:
+        rospy.loginfo("Getting TF data of " + frame + ".")
         opencv_data['names'].append(region)
         now = rospy.Time(0)
-        # trans = [0, 0, 0]
-        # rot = [0.000, 0.000, 0.0, 0.0]
         (trans, rot) = listener.lookupTransform("/map", frame, now)
         pose = tf_to_region_matrix(trans, rot)
         opencv_data[region] = to_opencv_dict(object_info, object_type, pose)
@@ -130,6 +125,8 @@ def to_opencv_dict(input_dict, object_type, pose):
 
 
 def write_dict_to_ocv_yaml(dictionary, filename):
+    """Create YAML from dictionary."""
+
     with open(filename, 'w') as outfile:
         yaml.dump(dictionary, outfile, default_flow_style=False)
 
@@ -142,6 +139,7 @@ def write_dict_to_ocv_yaml(dictionary, filename):
 
 
 def csv_list(string):
+    """Helper function for argparse."""
     return string.split(',')
 
 
@@ -151,15 +149,19 @@ if __name__ == '__main__':
                         type=str, default="gz_sim_v1.yaml")
     parser.add_argument("--target", help="Result file name",
                         type=str, default="semantic_map.yaml")
-    parser.add_argument("--prefix", help="Element prefix z.B iai_kitchen",
-                        type=str, default="iai_kitchen")
+    parser.add_argument("--prefix", help="Element prefix z.B /iai_kitchen/",
+                        type=str, default="/iai_kitchen/")
     parser.add_argument("--elements", help="Elements containing the regions z.B 'tables,shelves'",
                         type=csv_list, default=["tables", "shelves"])
+    parser.add_argument("--offset", help="Offset in z axis",
+                        type=float, default=0.125)
     args = parser.parse_args()
 
     rospy.init_node('semantic_map_setup', anonymous=True)
 
+    # Set arguments
     element_list = args.elements
     prefix = args.prefix
+    world_offset_z = args.offset
 
     write_region_filter_yaml_from_manual(args.source, args.target)
