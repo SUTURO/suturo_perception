@@ -5,6 +5,7 @@ import rospy
 import os
 import yaml
 import tf
+import tf2_ros
 import rospkg
 import argparse
 import functools
@@ -23,32 +24,40 @@ element_list = []
 prefix = ""
 
 
-def create_element(listener, object_info, object_type, suffix):
+def create_element(listener, object_info, object_type, suffix, postfix):
     """Create elements with one region."""
 
-    rospy.loginfo("Getting TF pose of /" + prefix + "/" + suffix + "_surface_center")
+    rospy.loginfo("Getting TF pose of : " + prefix + suffix + postfix)
     now = rospy.Time(0)
-    (trans, rot) = listener.lookupTransform("/map", prefix + suffix + "_surface_center", now)
+    try:
+        (trans, rot) = listener.lookupTransform("/map", prefix + suffix + postfix, now)
+    except(tf.ConnectivityException, tf.LookupException, tf.ExtrapolationException):
+        print("Pose : " + prefix + suffix + postfix + " not found skipping")
+        return
     pose = tf_to_region_matrix(trans, rot)
     opencv_data[suffix] = to_opencv_dict(object_info, object_type, pose)
     opencv_data['names'].append(suffix)
 
 
-def create_element_with_floors(listener, object_info, object_type, suffix):
+def create_element_with_floors(listener, object_info, object_type, suffix, postfix):
     """Create elements with more that one region."""
 
     shelf_region_frame_map = []
     num_floors = int(object_info['number_of_floors'])
     for n in range(0, num_floors):
-        shelf_region_frame_map.append([suffix + "_floor_" + str(n), prefix + suffix + "_floor_" + str(n) + "_piece"])
+        shelf_region_frame_map.append([suffix + "_floor_" + str(n), prefix + suffix + postfix[:-1] + str(n)])
 
     for (region, frame) in shelf_region_frame_map:
-        rospy.loginfo("Getting TF data of " + frame + ".")
-        opencv_data['names'].append(region)
+        rospy.loginfo("Getting TF data of : " + frame)
         now = rospy.Time(0)
-        (trans, rot) = listener.lookupTransform("/map", frame, now)
+        try:
+            (trans, rot) = listener.lookupTransform("/map", frame, now)
+        except(tf.ConnectivityException, tf.LookupException, tf.ExtrapolationException):
+            print("Pose : " + frame + " not found skipping")
+            return
         pose = tf_to_region_matrix(trans, rot)
         opencv_data[region] = to_opencv_dict(object_info, object_type, pose)
+        opencv_data['names'].append(region)
 
 
 def write_region_filter_yaml_from_manual(source, target_path):
@@ -81,11 +90,12 @@ def write_region_filter_yaml_from_manual(source, target_path):
     # Create Region
     for element in element_list:
         sem_ele = sem_map_yaml[element]
+        postfix = sem_map_yaml[element]['perception_postfix']
         for index in range(sem_ele['amount']):
             if 'number_of_floors' in sem_ele[index]:
-                create_element_with_floors(listener, sem_ele[index], element, sem_ele[index]['name'])
+                create_element_with_floors(listener, sem_ele[index], element, sem_ele[index]['name'], postfix)
             else:
-                create_element(listener, sem_ele[index], element, sem_ele[index]['name'])
+                create_element(listener, sem_ele[index], element, sem_ele[index]['name'], postfix)
 
     # Create YAML
     rospy.loginfo("Writing data to " + target_path)
@@ -149,7 +159,7 @@ if __name__ == '__main__':
                         type=str, default="gz_sim_v1.yaml")
     parser.add_argument("--target", help="Result file name",
                         type=str, default="semantic_map.yaml")
-    parser.add_argument("--prefix", help="Element prefix z.B /iai_kitchen/",
+    parser.add_argument("--prefix", help="Pose prefix z.B '/iai_kitchen/'",
                         type=str, default="/iai_kitchen/")
     parser.add_argument("--elements", help="Elements containing the regions z.B 'tables,shelves'",
                         type=csv_list, default=["tables", "shelves"])
