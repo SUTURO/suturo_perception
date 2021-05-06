@@ -112,36 +112,44 @@ class SuturoRegionFilter : public DrawingAnnotator
       ros::Publisher marker_publisher_;
 
       void publishSemanticMapMarker(const SemanticMapItem &item) {
-        visualization_msgs::Marker m;
-        m.header.frame_id = item.reference_frame;
-        m.header.stamp = ros::Time::now();
+        visualization_msgs::Marker m, m_text;
+        m.header.frame_id = m_text.header.frame_id = item.reference_frame;
+        m.header.stamp = m_text.header.stamp = ros::Time::now();
+        m_text.text = item.name;
 
-        m.ns = item.name;
+        m.ns = m_text.ns = item.name;
         m.id = 0;
-        m.lifetime = ros::Duration();
+        m_text.id = 1;
+        m.lifetime = m_text.lifetime = ros::Duration();
 
         m.type = visualization_msgs::Marker::CUBE;
+        m_text.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
         m.color.r = 0.0f;
         m.color.g = 0.0f;
         m.color.b = 1.0f;
         m.color.a = 0.75f;
+        m_text.color.a = 1;
 
-        auto origin = item.transform.getOrigin();
-        auto rotation = item.transform.getRotation();
+        auto transform = item.transform;
+        auto origin = transform.getOrigin();
+        auto rotation = transform.getRotation();
 
-        m.pose.position.x = origin.x();
-        m.pose.position.y = origin.y();
-        m.pose.position.z = origin.z();
+        m.pose.position.x = m_text.pose.position.x = origin.x();
+        m.pose.position.y = m_text.pose.position.y = origin.y();
+        m.pose.position.z = m_text.pose.position.z = origin.z();
         m.pose.orientation.x = rotation.getX();
         m.pose.orientation.y = rotation.getY();
         m.pose.orientation.z = rotation.getZ();
         m.pose.orientation.w = rotation.getW();
+        m_text.pose.orientation.w = 1;
 
         m.scale.x = item.x_dimension;
         m.scale.y = item.y_dimension;
         m.scale.z = item.z_dimension;
+        m_text.scale.x = m_text.scale.y = m_text.scale.z = 1;
 
         marker_publisher_.publish(m);
+        marker_publisher_.publish(m_text);
       }
 
     public:
