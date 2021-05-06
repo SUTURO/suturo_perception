@@ -20,3 +20,6 @@ parameters:
   global_threshold: 0.12
   pixel_threshold: 0.15
   semantic_map_definition: "suturo_semantic_map.yaml"
+  # Markers:
+  publish_marker: true
+  marker_topic: "perception_marker/regions"

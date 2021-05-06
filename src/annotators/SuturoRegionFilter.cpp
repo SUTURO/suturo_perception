@@ -45,6 +45,8 @@
 #include <yaml-cpp/yaml.h>
 #include <suturo_perception/types/all_types.h>
 
+#include <visualization_msgs/Marker.h>
+
 using namespace uima;
 
 /**
@@ -65,7 +67,7 @@ class SuturoRegionFilter : public DrawingAnnotator
         tf::Transform transform;
         std::string reference_frame;
         std::string name, type;
-        double y_dimention, z_dimension, x_dimention;
+        double y_dimension, z_dimension, x_dimension;
         cv::Vec4f plane_eq;
         bool has_plane_equations = false;
       };
@@ -100,11 +102,47 @@ class SuturoRegionFilter : public DrawingAnnotator
       // for frustum culling
       sensor_msgs::CameraInfo camera_info_;
       pcl::visualization::Camera camera;
-
       rs::TFListenerProxy listener_;
       double frustum[24];
-
       bool enabled = true;
+
+      // Markers for regions:
+      std::string marker_topic_;
+      bool publish_marker_;
+      ros::Publisher marker_publisher_;
+
+      void publishSemanticMapMarker(const SemanticMapItem &item) {
+        visualization_msgs::Marker m;
+        m.header.frame_id = item.reference_frame;
+        m.header.stamp = ros::Time::now();
+
+        m.ns = item.name;
+        m.id = 0;
+        m.lifetime = ros::Duration();
+
+        m.type = visualization_msgs::Marker::CUBE;
+        m.color.r = 0.0f;
+        m.color.g = 0.0f;
+        m.color.b = 1.0f;
+        m.color.a = 0.75f;
+
+        auto origin = item.transform.getOrigin();
+        auto rotation = item.transform.getRotation();
+
+        m.pose.position.x = origin.x();
+        m.pose.position.y = origin.y();
+        m.pose.position.z = origin.z();
+        m.pose.orientation.x = rotation.getX();
+        m.pose.orientation.y = rotation.getY();
+        m.pose.orientation.z = rotation.getZ();
+        m.pose.orientation.w = rotation.getW();
+
+        m.scale.x = item.x_dimension;
+        m.scale.y = item.y_dimension;
+        m.scale.z = item.z_dimension;
+
+        marker_publisher_.publish(m);
+      }
 
     public:
       SuturoRegionFilter()
@@ -122,6 +160,8 @@ class SuturoRegionFilter : public DrawingAnnotator
         , filtered(0)
         , last_time_(ros::Time::now())
         , timeout(120)
+        , marker_topic_("perception_marker/regions")
+        , publish_marker_(false)
       {
       }
 
@@ -182,6 +222,22 @@ class SuturoRegionFilter : public DrawingAnnotator
           ctx.extractValue("enabled", enabled);
         }
 
+        // Marker for regions:
+        if(ctx.isParameterDefined("publish_marker"))
+        {
+          ctx.extractValue("publish_marker", publish_marker_);
+        }
+        if(ctx.isParameterDefined("marker_topic"))
+        {
+          ctx.extractValue("marker_topic", marker_topic_);
+        }
+
+        if(publish_marker_)
+        {
+          ros::NodeHandle n;
+          marker_publisher_ = n.advertise<visualization_msgs::Marker>(marker_topic_, 1);
+        }
+
         return UIMA_ERR_NONE;
       }
 
@@ -220,8 +276,8 @@ class SuturoRegionFilter : public DrawingAnnotator
 
             item.name = sem_map_entries[i];
             item.type = entry["type"].as<std::string>();
-            item.x_dimention = entry["depth"].as<double>();   // X-dim
-            item.y_dimention = entry["width"].as<double>();   // Y-dim
+            item.x_dimension = entry["depth"].as<double>();   // X-dim
+            item.y_dimension = entry["width"].as<double>();   // Y-dim
             item.z_dimension = entry["height"].as<double>();  // Z-dim
 
             if (entry["reference_frame"])
@@ -280,11 +336,15 @@ class SuturoRegionFilter : public DrawingAnnotator
           rs::SemanticMapObject obj = rs::create<rs::SemanticMapObject>(tcas);
           obj.name(item.name);
           obj.typeName(item.type);
-          obj.width(static_cast<double>(item.y_dimention));
+          obj.width(static_cast<double>(item.y_dimension));
           obj.height(static_cast<double>(item.z_dimension));
-          obj.depth(static_cast<double>(item.x_dimention));
+          obj.depth(static_cast<double>(item.x_dimension));
           obj.transform(rs::conversion::to(tcas, item.transform));
           semantic_map.push_back(obj);
+
+          if(publish_marker_) {
+            publishSemanticMapMarker(item);
+          }
         }
         cas.set(VIEW_SEMANTIC_MAP, semantic_map);
 
@@ -505,8 +565,8 @@ class SuturoRegionFilter : public DrawingAnnotator
         }
 
         // check region bounding box
-        Eigen::Vector3d bbMin(-(region.y_dimention / 2), -(region.z_dimension / 2), -(region.x_dimention / 2));
-        Eigen::Vector3d bbMax((region.y_dimention / 2), (region.z_dimension / 2), 0.5);
+        Eigen::Vector3d bbMin(-(region.y_dimension / 2), -(region.z_dimension / 2), -(region.x_dimension / 2));
+        Eigen::Vector3d bbMax((region.y_dimension / 2), (region.z_dimension / 2), 0.5);
         pcl::visualization::FrustumCull res =
             (pcl::visualization::FrustumCull)pcl::visualization::cullFrustum(tFrustum, bbMin, bbMax);
         return res != pcl::visualization::PCL_OUTSIDE_FRUSTUM;
@@ -582,10 +642,10 @@ class SuturoRegionFilter : public DrawingAnnotator
 
       void filterRegion(const SemanticMapItem& region)
       {
-        const float minX = -(region.x_dimention / 2) + border_;
-        const float maxX = (region.x_dimention / 2) - border_;
-        float minY = -(region.y_dimention / 2) + border_;
-        const float maxY = (region.y_dimention / 2) - border_;
+        const float minX = -(region.x_dimension / 2) + border_;
+        const float maxX = (region.x_dimension / 2) - border_;
+        float minY = -(region.y_dimension / 2) + border_;
+        const float maxY = (region.y_dimension / 2) - border_;
         const float minZ = -(region.z_dimension / 2);
         float maxZ = +(region.z_dimension / 2);
 
@@ -717,7 +777,7 @@ class SuturoRegionFilter : public DrawingAnnotator
           tf::vectorTFToEigen(transform.getOrigin(), translation);
           tf::quaternionTFToEigen(transform.getRotation(), rotation);
 
-          visualizer.addCube(translation.cast<float>(), rotation.cast<float>(), region.x_dimention, region.y_dimention,
+          visualizer.addCube(translation.cast<float>(), rotation.cast<float>(), region.x_dimension, region.y_dimension,
                              region.z_dimension, oss.str());
           visualizer.setRepresentationToWireframeForAllActors();
         }
