@@ -146,7 +146,7 @@ class SuturoRegionFilter : public DrawingAnnotator
         m.scale.x = item.x_dimension;
         m.scale.y = item.y_dimension;
         m.scale.z = item.z_dimension;
-        m_text.scale.x = m_text.scale.y = m_text.scale.z = 1;
+        m_text.scale.z = 0.1f;
 
         marker_publisher_.publish(m);
         marker_publisher_.publish(m_text);
@@ -243,7 +243,7 @@ class SuturoRegionFilter : public DrawingAnnotator
         if(publish_marker_)
         {
           ros::NodeHandle n;
-          marker_publisher_ = n.advertise<visualization_msgs::Marker>(marker_topic_, 1);
+          marker_publisher_ = n.advertise<visualization_msgs::Marker>(marker_topic_, 100);
         }
 
         return UIMA_ERR_NONE;
