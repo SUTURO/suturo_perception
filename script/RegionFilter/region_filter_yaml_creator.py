@@ -24,28 +24,28 @@ element_list = []
 prefix = ""
 
 
-def create_element(listener, object_info, object_type, suffix, postfix):
+def create_element(listener, object_info, object_type, suffix, postfix, role):
     """Create elements with one region."""
 
-    rospy.loginfo("Getting TF pose of : " + prefix + suffix + postfix)
+    rospy.loginfo("Getting TF pose of : " + prefix + suffix + '#' + role + '#' + postfix)
     now = rospy.Time(0)
     try:
-        (trans, rot) = listener.lookupTransform("/map", prefix + suffix + postfix, now)
+        (trans, rot) = listener.lookupTransform("/map", prefix + suffix + '#' + role + '#' + postfix, now)
     except(tf.ConnectivityException, tf.LookupException, tf.ExtrapolationException):
-        print("Pose : " + prefix + suffix + postfix + " not found skipping")
+        print("Pose : " + prefix + suffix + '#' + role + '#' + postfix + " not found skipping")
         return
     pose = tf_to_region_matrix(trans, rot)
     opencv_data[suffix] = to_opencv_dict(object_info, object_type, pose)
     opencv_data['names'].append(suffix)
 
 
-def create_element_with_floors(listener, object_info, object_type, suffix, postfix):
+def create_element_with_floors(listener, object_info, object_type, suffix, postfix, role):
     """Create elements with more that one region."""
 
     shelf_region_frame_map = []
     num_floors = int(object_info['number_of_floors'])
     for n in range(0, num_floors):
-        shelf_region_frame_map.append([suffix + "_floor_" + str(n), prefix + suffix + postfix[:-1] + str(n)])
+        shelf_region_frame_map.append([suffix + "_floor_" + str(n), prefix + suffix + '#' + role + '#' + postfix[:-1] + str(n)])
 
     for (region, frame) in shelf_region_frame_map:
         rospy.loginfo("Getting TF data of : " + frame)
@@ -65,6 +65,8 @@ def write_region_filter_yaml_from_manual(source, target_path):
 
     rospy.loginfo("Initialsing TF listener.")
     listener = tf.TransformListener()
+
+    target = rospack.get_path("suturo_perception") + "/config/" + target_path
 
     # Load base YAML
     sem_map_manual_yaml_path = rospack.get_path("suturo_resources") + "/urdf/yaml/" + source
@@ -92,14 +94,15 @@ def write_region_filter_yaml_from_manual(source, target_path):
         sem_ele = sem_map_yaml[element]
         postfix = sem_map_yaml[element]['perception_postfix']
         for index in range(sem_ele['amount']):
+            role = sem_ele[index]['knowledge_role']
             if 'number_of_floors' in sem_ele[index]:
-                create_element_with_floors(listener, sem_ele[index], element, sem_ele[index]['name'], postfix)
+                create_element_with_floors(listener, sem_ele[index], element, sem_ele[index]['name'], postfix, role)
             else:
-                create_element(listener, sem_ele[index], element, sem_ele[index]['name'], postfix)
+                create_element(listener, sem_ele[index], element, sem_ele[index]['name'], postfix, role)
 
     # Create YAML
-    rospy.loginfo("Writing data to " + target_path)
-    write_dict_to_ocv_yaml(opencv_data, target_path)
+    rospy.loginfo("Writing data to " + target)
+    write_dict_to_ocv_yaml(opencv_data, target)
 
 
 def tf_to_region_matrix(trans, rot):
@@ -158,7 +161,7 @@ if __name__ == '__main__':
     parser.add_argument("--source", help="Source yaml file",
                         type=str, default="gz_sim_v1.yaml")
     parser.add_argument("--target", help="Result file name",
-                        type=str, default="semantic_map.yaml")
+                        type=str, default="suturo_semantic_map.yaml")
     parser.add_argument("--prefix", help="Pose prefix z.B '/iai_kitchen/'",
                         type=str, default="/iai_kitchen/")
     parser.add_argument("--elements", help="Elements containing the regions z.B 'tables,shelves'",

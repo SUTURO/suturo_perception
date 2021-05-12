@@ -6,25 +6,19 @@ import rospkg
 
 rospack = rospkg.RosPack()
 
-parser = argparse.ArgumentParser(description='Process some integers.')
+parser = argparse.ArgumentParser(description='Setup pipeline.')
 parser.add_argument("--source", help="Source yaml file",
-                    type=str, default="semantic_map.yaml")
-parser.add_argument("--rename", help="New name for the source yaml after moving",
-                    type=str)
+                    type=str, default="suturo_semantic_map.yaml")
 parser.add_argument("--target", help="Target yaml file",
                     type=str, default="hsrb.yaml")
 
 args = parser.parse_args()
 
 path = rospack.get_path("suturo_perception")
-name = ""
 
-if args.rename is not None:
-    name = path + '/config/' + args.rename
-else:
-    name = path + '/config/' + args.source
+name = path + '/config/' + args.source
 
-shutil.move(path + '/script/RegionFilter/' + args.source, name)
+# shutil.move(path + '/script/RegionFilter/' + args.source, name)
 
 with open(name, 'r') as f:
     source_lines = f.readlines()
