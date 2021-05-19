@@ -27,12 +27,12 @@ prefix = ""
 def create_element(listener, object_info, object_type, suffix, postfix, role):
     """Create elements with one region."""
 
-    rospy.loginfo("Getting TF pose of : " + prefix + suffix + '#' + role + '#' + postfix)
+    rospy.loginfo("Getting TF pose of : " + prefix + suffix + ':' + role + ':' + postfix)
     now = rospy.Time(0)
     try:
-        (trans, rot) = listener.lookupTransform("/map", prefix + suffix + '#' + role + '#' + postfix, now)
+        (trans, rot) = listener.lookupTransform("/map", prefix + suffix + ':' + role + ':' + postfix, now)
     except(tf.ConnectivityException, tf.LookupException, tf.ExtrapolationException):
-        print("Pose : " + prefix + suffix + '#' + role + '#' + postfix + " not found skipping")
+        print("Pose : " + prefix + suffix + ':' + role + ':' + postfix + " not found skipping")
         return
     pose = tf_to_region_matrix(trans, rot)
     opencv_data[suffix] = to_opencv_dict(object_info, object_type, pose)
@@ -45,7 +45,7 @@ def create_element_with_floors(listener, object_info, object_type, suffix, postf
     shelf_region_frame_map = []
     num_floors = int(object_info['number_of_floors'])
     for n in range(0, num_floors):
-        shelf_region_frame_map.append([suffix + "_floor_" + str(n), prefix + suffix + '#' + role + '#' + postfix[:-1] + str(n)])
+        shelf_region_frame_map.append([suffix + "_floor_" + str(n), prefix + suffix + ':' + role + ':' + postfix[:-1] + str(n)])
 
     for (region, frame) in shelf_region_frame_map:
         rospy.loginfo("Getting TF data of : " + frame)
