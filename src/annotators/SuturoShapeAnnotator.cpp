@@ -1,3 +1,5 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "openmp-use-default-none"
 /***
  * Author: Evan Kapitzke
  *
@@ -17,6 +19,8 @@
 #include <pcl/sample_consensus/model_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
 #include <pcl/io/pcd_io.h>
+#include <pcl/filters/voxel_grid.h>
+#include <pcl/features/integral_image_normal.h>
 // RS
 #include <robosherlock/DrawingAnnotator.h>
 #include <robosherlock/types/all_types.h>
@@ -42,7 +46,8 @@ private:
   float param_confidence_min = 0.5;
   float param_eps_angle = 0.1;
   int param_min_cluster_size = 1000;
-
+  float param_cloud_reduction = 0.01;
+  float param_normal_reduction = 0.01;
   // Visualisation:
   cv::Mat annotatorView;
 
@@ -205,6 +210,8 @@ public:
     ctx.extractValue("confidence_min", param_confidence_min);
     ctx.extractValue("eps_angle", param_eps_angle);
     ctx.extractValue("min_cluster_size", param_min_cluster_size);
+    ctx.extractValue("cluster_reduction", param_cloud_reduction);
+    ctx.extractValue("normal_reduction", param_normal_reduction);
 
     return UIMA_ERR_NONE;
   }
@@ -236,14 +243,19 @@ public:
             "\ndistance_weight: " << param_distance_weight <<
             "\nradius_min: " << param_radius_min <<
             "\nradius_max: " << param_radius_max <<
-            "\nconfidence_min: " << param_confidence_min);
+            "\nconfidence_min: " << param_confidence_min <<
+            "\ncluster_reduction: " << param_cloud_reduction <<
+            "\nnormal_reduction: " << param_normal_reduction);
 
     // Process clusters:
     std::vector<rs::ObjectHypothesis> clusters;
     scene.identifiables.filter(clusters);
     outInfo("Processing " << clusters.size() << " point clusters");
 
-#pragma omp parallel for
+    omp_set_dynamic(0);
+    omp_set_num_threads(clusters.size());
+
+    #pragma omp parallel for
     for(int idx = 0; idx < clusters.size(); ++idx) {
         // Convert cluster, save normals:
         rs::ReferenceClusterPoints clusterRefPoints = ((rs::ReferenceClusterPoints)clusters[idx].points.get());
@@ -263,10 +275,23 @@ public:
             continue;
         }
 
+        pcl::VoxelGrid<pcl::PointXYZRGBA> sor;
+        sor.setInputCloud (clusterCloud);
+        sor.setLeafSize (param_cloud_reduction, param_cloud_reduction, param_cloud_reduction);
+        sor.filter (*clusterCloud);
+
+        pcl::NormalEstimation<pcl::PointXYZRGBA, pcl::Normal> ne;
+        ne.setInputCloud (clusterCloud);
+        pcl::search::KdTree<pcl::PointXYZRGBA>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZRGBA> ());
+        ne.setSearchMethod (tree);
+        ne.setRadiusSearch (param_normal_reduction);
+
+        ne.compute (*clusterNormals);
+
         clusterCloud->width = clusterCloud->points.size();
         clusterCloud->height = 1;
         clusterCloud->is_dense = true;
-        clusterNormals->width = normals_ptr->points.size();
+        clusterNormals->width = clusterNormals->points.size();
         clusterNormals->height = 1;
         clusterNormals->is_dense = true;
 
@@ -279,6 +304,7 @@ public:
         float cylinderConfidence = annotateCylinder(tcas, clusterCloud, clusterNormals);
         float sphereConfidence = annotateSphere(tcas, clusterCloud, clusterNormals);
 
+        std::cout << "Confidence Box : " << boxConfidence << ", Cylinder : " << cylinderConfidence << ", Sphere : " << sphereConfidence << std::endl;
         // Select shape with highest confidence:
         if(boxConfidence > cylinderConfidence && boxConfidence > sphereConfidence)
         {
@@ -330,7 +356,7 @@ public:
     }
 
     // Print time:
-    outInfo("took: " << clock.getTime() << " ms.");
+    outInfo("took: " << clock.getTime() << " ms. with the Cluster size of : " << clusters.size());
 
     return UIMA_ERR_NONE;
   }
@@ -345,3 +371,4 @@ public:
 
 // This macro exports an entry point that is used to create the annotator.
 MAKE_AE(SuturoShapeAnnotator)
+#pragma clang diagnostic pop
