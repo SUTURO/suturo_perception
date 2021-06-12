@@ -1,7 +1,7 @@
 - git:
     local-name: suturo_perception
     uri: https://github.com/SUTURO/suturo_perception.git
-    version: master
+    version: robocup
 
 - git:
     local-name: robosherlock
