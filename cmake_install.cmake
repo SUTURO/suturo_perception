@@ -38,14 +38,14 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/Caffe" TYPE FILE FILES "/home/ros/workspaces/caffe/build/cmake/CaffeConfig.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/Caffe" TYPE FILE FILES "/caffe/caffe-master/build/cmake/CaffeConfig.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/Caffe/CaffeTargets.cmake")
     file(DIFFERENT EXPORT_FILE_CHANGED FILES
          "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/Caffe/CaffeTargets.cmake"
-         "/home/ros/workspaces/caffe/build/CMakeFiles/Export/share/Caffe/CaffeTargets.cmake")
+         "/caffe/caffe-master/build/CMakeFiles/Export/share/Caffe/CaffeTargets.cmake")
     if(EXPORT_FILE_CHANGED)
       file(GLOB OLD_CONFIG_FILES "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/Caffe/CaffeTargets-*.cmake")
       if(OLD_CONFIG_FILES)
@@ -54,21 +54,21 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
       endif()
     endif()
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/Caffe" TYPE FILE FILES "/home/ros/workspaces/caffe/build/CMakeFiles/Export/share/Caffe/CaffeTargets.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/Caffe" TYPE FILE FILES "/caffe/caffe-master/build/CMakeFiles/Export/share/Caffe/CaffeTargets.cmake")
   if("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
-    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/Caffe" TYPE FILE FILES "/home/ros/workspaces/caffe/build/CMakeFiles/Export/share/Caffe/CaffeTargets-release.cmake")
+    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/Caffe" TYPE FILE FILES "/caffe/caffe-master/build/CMakeFiles/Export/share/Caffe/CaffeTargets-release.cmake")
   endif()
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/ros/workspaces/caffe/build/src/gtest/cmake_install.cmake")
-  include("/home/ros/workspaces/caffe/build/src/caffe/cmake_install.cmake")
-  include("/home/ros/workspaces/caffe/build/tools/cmake_install.cmake")
-  include("/home/ros/workspaces/caffe/build/examples/cmake_install.cmake")
-  include("/home/ros/workspaces/caffe/build/python/cmake_install.cmake")
-  include("/home/ros/workspaces/caffe/build/matlab/cmake_install.cmake")
-  include("/home/ros/workspaces/caffe/build/docs/cmake_install.cmake")
+  include("/caffe/caffe-master/build/src/gtest/cmake_install.cmake")
+  include("/caffe/caffe-master/build/src/caffe/cmake_install.cmake")
+  include("/caffe/caffe-master/build/tools/cmake_install.cmake")
+  include("/caffe/caffe-master/build/examples/cmake_install.cmake")
+  include("/caffe/caffe-master/build/python/cmake_install.cmake")
+  include("/caffe/caffe-master/build/matlab/cmake_install.cmake")
+  include("/caffe/caffe-master/build/docs/cmake_install.cmake")
 
 endif()
 
@@ -80,5 +80,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/ros/workspaces/caffe/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/caffe/caffe-master/caffe/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
