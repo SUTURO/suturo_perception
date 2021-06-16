@@ -5,8 +5,8 @@
 
 - git:
     local-name: robosherlock
-    uri: https://github.com/RoboSherlock/robosherlock.git
-    version: master
+    uri: https://github.com/evankapi/robosherlock.git
+    version: robocup
 
 - git:
     local-name: rs_resources
