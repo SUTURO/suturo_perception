@@ -15,6 +15,6 @@
 
 - git:
     local-name: rs_addons
-    uri: https://github.com/Jastock/rs_addons.git
-    version: master
+    uri: https://github.com/Paniago82/rs_addons.git
+    version: robocup
 
