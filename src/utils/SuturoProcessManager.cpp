@@ -108,12 +108,12 @@ void SuturoProcessManager::run(std::map<std::string, boost::any> args, std::vect
         else {
             outInfo("Cluster region: " << region[0].name());
 
-            if(!filter_regions || std::find(regions.begin(), regions.end(), region[0].name()) != regions.end()) {
+            //if(!filter_regions || std::find(regions.begin(), regions.end(), region[0].name()) != regions.end()) {
                 getClusterFeatures(cluster, detectionData);
-            }
-            else {
-                outInfo("Object was ignored because it seems to be placed on the wrong surface");
-            }
+            //}
+            //else {
+            //    outInfo("Object was ignored because it seems to be placed on the wrong surface");
+            //}
         }
     }
 
