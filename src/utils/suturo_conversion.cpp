@@ -108,7 +108,7 @@ namespace suturo_perception {
         }
 
         void makeObjectDetectionData(geometry_msgs::PoseStamped &pose, rs::Geometry &geometry, u_int shape, std::string region,
-                std::string &objClass, float confidence, std_msgs::ColorRGBA &c,  suturo_perception_msgs::ObjectDetectionData &odd) {
+                std::string &objClass, float confidence, std_msgs::ColorRGBA &c, suturo_perception_msgs::ColorHSV &hsv, suturo_perception_msgs::ObjectDetectionData &odd) {
 
             odd.pose = pose;
             auto boundingBox = geometry.boundingBox();
@@ -121,6 +121,7 @@ namespace suturo_perception {
             odd.obj_class = objClass;
             odd.confidence_class = confidence;
             odd.color = c;
+            odd.color_hsv = hsv;
         }
     }
 }

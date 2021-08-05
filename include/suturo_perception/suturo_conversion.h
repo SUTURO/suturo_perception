@@ -24,7 +24,7 @@ namespace suturo_perception {
 
         void makeObjectDetectionData(geometry_msgs::PoseStamped &pose, rs::Geometry &geometry, u_int shape,
                                      std::string region, std::string &objClass, float confidence,
-                                     std_msgs::ColorRGBA &c,
+                                     std_msgs::ColorRGBA &c, suturo_perception_msgs::ColorHSV &hsv,
                                      suturo_perception_msgs::ObjectDetectionData &odd);
     }
 }

@@ -157,6 +157,9 @@ void SuturoProcessManager::getClusterFeatures(rs::ObjectHypothesis cluster, std:
         std::vector<rs::SemanticColor> colorH;
         cluster.annotations.filter(colorH);
 
+        std::vector<rs::ColorHistogram> histogram;
+        cluster.annotations.filter(histogram);
+
         geometry_msgs::PoseStamped poseStamped;
         std::string objClass;
         std::string knownObjClass;
@@ -166,12 +169,11 @@ void SuturoProcessManager::getClusterFeatures(rs::ObjectHypothesis cluster, std:
         float g = 0.0;
         float b = 0.0;
         std_msgs::ColorRGBA c;
-
+        suturo_perception_msgs::ColorHSV hsv;
 
         ObjectDetectionData odd;
 
         if(!colorH.empty()) {
-
             std::string tmp_color_string = colorH[0].color.get();
             outInfo("" << colorH[0].color.get());
 
@@ -200,7 +202,6 @@ void SuturoProcessManager::getClusterFeatures(rs::ObjectHypothesis cluster, std:
                 g = 127.0;
                 b = 127.0;}
 
-
             c.r = r;
             c.g = g;
             c.b = b;
@@ -210,12 +211,43 @@ void SuturoProcessManager::getClusterFeatures(rs::ObjectHypothesis cluster, std:
             ROS_WARN("Warning: No color was perceived.");
         }
 
+        if(!histogram.empty()) {
+            cv::Mat hist;
+            rs::conversion::from(histogram[0].hist.get(), hist);
+            const cv::Vec3b *itHSV = hist.ptr<cv::Vec3b>(r);
+
+            //for(int c = 0; c < hist.cols; ++c, ++itHSV) {
+                const uint8_t hue = itHSV->val[0] * 360 / 255;
+                const uint8_t sat = itHSV->val[1] * 100 / 255;
+                const uint8_t val = itHSV->val[2] * 100 / 255;
+
+                hsv.h = hue;
+                hsv.s = sat;
+                hsv.v = val;
+
+                //ROS_WARN_STREAM("H=" << std::to_string(hue) << " S=" << std::to_string(sat) << " V=" << std::to_string(val));
+            //}
+
+            hsv.h = sqrt(hsv.h / hist.cols);
+            hsv.s = sqrt(hsv.s / hist.cols);
+            hsv.v = sqrt(hsv.v / hist.cols);
+
+            auto mean = cv::mean(hist);
+            ROS_WARN_STREAM("HSV mean: " << mean);
+
+            auto pos = cluster.rois.get().roi.get().pos.get();
+            ROS_ERROR_STREAM("RGB data: x=" << pos.x.get() << ", " << pos.y.get() << " HSV( " << hsv.h << ", " << hsv.s << ", "  << hsv.v << " )");
+
+        } else {
+            ROS_WARN("No color histogram annotated.");
+        }
 
         if(!poses.empty()) {
             suturo_perception::conversion::from(poses[0].world.get(), poseStamped);
         } else {
             ROS_WARN("Warning: No pose information was perceived.");
         }
+
         if(!classification.empty()){
             objClass = classification[0].classname.get();
             //knownObjClass = classification[1].classname.get();
@@ -246,11 +278,11 @@ void SuturoProcessManager::getClusterFeatures(rs::ObjectHypothesis cluster, std:
             ROS_WARN("Warning: No region annotated.");
 
             suturo_perception::conversion::makeObjectDetectionData(poseStamped, geometry[0],
-                                                                   suturo_perception::conversion::decode_shape(shapes), "", objClass, confidence, c, odd);
+                                                                   suturo_perception::conversion::decode_shape(shapes), "", objClass, confidence, c, hsv, odd);
         }
         else {
             suturo_perception::conversion::makeObjectDetectionData(poseStamped, geometry[0],
-                                                                   suturo_perception::conversion::decode_shape(shapes), region[0].name(), objClass, confidence, c, odd);
+                                                                   suturo_perception::conversion::decode_shape(shapes), region[0].name(), objClass, confidence, c, hsv, odd);
         }
 
 
