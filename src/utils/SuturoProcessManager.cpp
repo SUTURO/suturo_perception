@@ -226,7 +226,7 @@ void SuturoProcessManager::getClusterFeatures(rs::ObjectHypothesis cluster, std:
 
             auto pos = cluster.rois.get().roi.get().pos.get();
             ROS_ERROR_STREAM(
-                    "RGB data: x=" << pos.x.get() << ", " << pos.y.get() << " HSV( " << hsv.h << ", " << hsv.s << ", "
+                    "HSV data: x=" << pos.x.get() << ", " << pos.y.get() << " HSV( " << hsv.h << ", " << hsv.s << ", "
                                    << hsv.v << " )");
 
         } else {
