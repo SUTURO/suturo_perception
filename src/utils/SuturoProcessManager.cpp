@@ -214,29 +214,20 @@ void SuturoProcessManager::getClusterFeatures(rs::ObjectHypothesis cluster, std:
         if(!histogram.empty()) {
             cv::Mat hist;
             rs::conversion::from(histogram[0].hist.get(), hist);
-            const cv::Vec3b *itHSV = hist.ptr<cv::Vec3b>(r);
+            const cv::Vec3b *itHSV = hist.ptr<cv::Vec3b>();
 
-            //for(int c = 0; c < hist.cols; ++c, ++itHSV) {
-                const uint8_t hue = itHSV->val[0] * 360 / 255;
-                const uint8_t sat = itHSV->val[1] * 100 / 255;
-                const uint8_t val = itHSV->val[2] * 100 / 255;
+            const uint8_t hue = itHSV->val[0] * 360 / 255;
+            const uint8_t sat = itHSV->val[1] * 100 / 255;
+            const uint8_t val = itHSV->val[2] * 100 / 255;
 
-                hsv.h = hue;
-                hsv.s = sat;
-                hsv.v = val;
-
-                //ROS_WARN_STREAM("H=" << std::to_string(hue) << " S=" << std::to_string(sat) << " V=" << std::to_string(val));
-            //}
-
-            hsv.h = sqrt(hsv.h / hist.cols);
-            hsv.s = sqrt(hsv.s / hist.cols);
-            hsv.v = sqrt(hsv.v / hist.cols);
-
-            auto mean = cv::mean(hist);
-            ROS_WARN_STREAM("HSV mean: " << mean);
+            hsv.h = hue;
+            hsv.s = sat;
+            hsv.v = val;
 
             auto pos = cluster.rois.get().roi.get().pos.get();
-            ROS_ERROR_STREAM("RGB data: x=" << pos.x.get() << ", " << pos.y.get() << " HSV( " << hsv.h << ", " << hsv.s << ", "  << hsv.v << " )");
+            ROS_ERROR_STREAM(
+                    "RGB data: x=" << pos.x.get() << ", " << pos.y.get() << " HSV( " << hsv.h << ", " << hsv.s << ", "
+                                   << hsv.v << " )");
 
         } else {
             ROS_WARN("No color histogram annotated.");
