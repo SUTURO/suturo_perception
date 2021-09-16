@@ -1,17 +1,4 @@
 %YAML:1.0
-names:
-- bed_table
-- table_clone
-- table
-- hcr_shefl_2_0
-- hcr_shefl_2_1
-- hcr_shefl_2_2
-- bookshelf_clone_0_0
-- bookshelf_clone_0_1
-- bookshelf_clone_0_2
-- bookshelf_0
-- bookshelf_1
-- bookshelf_2
 bed_table:
   depth: 0.398
   height: 0.35
@@ -129,6 +116,19 @@ hcr_shefl_2_2:
     rows: 4
   type: Shelf
   width: 0.414
+names:
+- bed_table
+- table_clone
+- table
+- hcr_shefl_2_0
+- hcr_shefl_2_1
+- hcr_shefl_2_2
+- bookshelf_clone_0_0
+- bookshelf_clone_0_1
+- bookshelf_clone_0_2
+- bookshelf_0
+- bookshelf_1
+- bookshelf_2
 table:
   depth: 0.8
   height: 0.35

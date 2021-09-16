@@ -13,6 +13,7 @@ fixedflow:
   - RegionAnnotator
   - CaffeAnnotator
   - KnnAnnotator
+  - TrackingAnnotator
 
 CollectionReader:
   camera_config_files: ['config_hsrb.ini']

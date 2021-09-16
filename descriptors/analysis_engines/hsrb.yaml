@@ -3,7 +3,8 @@ ae:
 fixedflow:
   - CollectionReader
   - ImagePreprocessor
-  - SuturoRegionFilter
+  - PointCloudFilter
+  #- SuturoRegionFilter
   - NormalEstimator
   - PlaneAnnotator
   - PointCloudClusterExtractor
@@ -13,6 +14,7 @@ fixedflow:
   - RegionAnnotator
   - CaffeAnnotator
   - KnnAnnotator
+  - TrackingAnnotator
 
 CollectionReader:
   camera_config_files: ['config_hsrb.ini']
@@ -21,12 +23,12 @@ PlaneAnnotator:
   min_plane_inliers: 2500
 
 PointCloudFilter:
-  minX: -1.0
-  maxX: 1.0
+  minX: -0.4
+  maxX: 0.4
   minY: -1.5
   maxY: 1.5
   minZ: 0.7
-  maxZ: 2.0
+  maxZ: 1.5
   transform_cloud: true
 
 ClusterColorHistogramCalculator:
@@ -35,10 +37,16 @@ ClusterColorHistogramCalculator:
 SuturoRegionFilter:
   enable_frustum_culling: false
   defaultRegions:
-    - robocup_table
-    - robocup_shelf_0
-    - robocup_shelf_1
-    - robocup_shelf_2
-    - robocup_shelf_3
-    - robocup_shelf_4
+  - bed_table
+  - table_clone
+  - table
+  - hcr_shefl_2_0
+  - hcr_shefl_2_1
+  - hcr_shefl_2_2
+  - bookshelf_clone_0_0
+  - bookshelf_clone_0_1
+  - bookshelf_clone_0_2
+  - bookshelf_0
+  - bookshelf_1
+  - bookshelf_2
   semantic_map_definition: "suturo_semantic_map.yaml"

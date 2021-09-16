@@ -126,3 +126,5 @@ target_link_libraries(rs_RegionAnnotator ${catkin_LIBRARIES})
 # Suturo Region Filter
 rs_add_library(rs_SuturoRegionFilter src/annotators/SuturoRegionFilter.cpp)
 target_link_libraries(rs_SuturoRegionFilter ${catkin_LIBRARIES} ${YAML_CPP_LIBRARIES})
+rs_add_library(rs_TrackingAnnotator src/TrackingAnnotator.cpp)
+target_link_libraries(rs_TrackingAnnotator ${catkin_LIBRARIES})
