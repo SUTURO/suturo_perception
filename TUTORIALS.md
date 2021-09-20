@@ -1,3 +1,11 @@
+# Perception Demo 
+
+## Prerequisite Files  
+
+* Bag file: https://seafile.zfn.uni-bremen.de/f/271defcfe3e04dbc89ea/?dl=1 
+
+
+
 # Recording and replaying files from MongoDB in robosherlock on hsrb
 
 ## Recording

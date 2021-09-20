@@ -1,0 +1,32 @@
+ae:
+  name: suturo_demo
+fixedflow:
+  - CollectionReader
+  - ImagePreprocessor
+  - NormalEstimator
+  - PlaneAnnotator
+  - PointCloudClusterExtractor
+  - ClusterColorHistogramCalculator
+  - Cluster3DGeometryAnnotator
+  - SuturoShapeAnnotator
+  - RegionAnnotator
+  - CaffeAnnotator
+  - KnnAnnotator
+
+CollectionReader:
+  camera_config_files: ['config_demo.ini']
+
+PlaneAnnotator:
+  min_plane_inliers: 2500
+
+PointCloudFilter:
+  minX: -1.0
+  maxX: 1.0
+  minY: -1.5
+  maxY: 1.5
+  minZ: 0.7
+  maxZ: 2.0
+  transform_cloud: true
+
+ClusterColorHistogramCalculator:
+  semantic_label: true
