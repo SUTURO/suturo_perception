@@ -4,8 +4,15 @@
 
 * Bag file: https://seafile.zfn.uni-bremen.de/f/271defcfe3e04dbc89ea/?dl=1 
 
+## Running the demo 
 
-
+* This tutorial expects that the perception installation is complete: https://github.com/SUTURO/suturo_docs/tree/master/bachelor_19_20/installation_guide
+* First start the recording by running the following command in the same folder as the bag file: rosbag play -l 2020-12-07-13-47-24.bag
+* Then Start the demo pipeline with the following command from the perception workspace: rosrun robosherlock run _ae:=suturo_demo _vis:=true
+* If there are some problems with this command maybe the workspace in not source, in this case run : source devel/setup.bash
+* This will start the pipeline and after some time two displays will pop up, the Image Viewer for 2D information and Cloud Viewer for depth information. 
+* The user can navigate between the pipeline result by clicking on the Image Viewer and then pressing the keys "N" or "O". 
+ 
 # Recording and replaying files from MongoDB in robosherlock on hsrb
 
 ## Recording
