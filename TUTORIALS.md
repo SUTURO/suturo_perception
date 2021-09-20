@@ -11,7 +11,7 @@
 * Then Start the demo pipeline with the following command from the perception workspace: rosrun robosherlock run _ae:=suturo_demo _vis:=true
 * If there are some problems with this command maybe the workspace in not sourced, in this case run : source devel/setup.bash and after that run the last command again. 
 * This will start the pipeline and after some time two displays will pop up, the Image Viewer for 2D information and Cloud Viewer for depth information. 
-* The user can navigate between the pipeline result by clicking on the Image Viewer and then pressing the keys "N" or "O". 
+* The user can navigate between the pipeline result by clicking on the Image Viewer and then pressing the keys "N" or "P". 
  
 # Recording and replaying files from MongoDB in robosherlock on hsrb
 
