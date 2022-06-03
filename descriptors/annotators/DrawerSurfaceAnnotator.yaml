@@ -1,0 +1,14 @@
+annotator:
+  implementation: rs_DrawerSurfaceAnnotator
+  name: DrawerSurfaceAnnotator
+parameters:
+  plane_estimation_mode: PCL
+  use_non_nan_cloud: false
+  min_plane_inliers: 2500
+  max_iterations: 500
+  max_curvature: 0.1
+  distance_threshold: 0.02
+  angular_threshold_deg: 5.0
+capabilities:
+  inputs: ['rs.pcl.FilteredPointCloud']
+  outputs: ['rs.annotation.Plane','rs.scene.ObjectHypothesis']

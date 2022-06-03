@@ -1,0 +1,44 @@
+ae:
+  name: hsrb_drawers
+fixedflow:
+  - CollectionReader
+  - ImagePreprocessor
+  - SuturoRegionFilter
+  - NormalEstimator
+ # - PlaneAnnotator
+  - DrawerSurfaceAnnotator
+  - PointCloudClusterExtractor
+  - ClusterColorHistogramCalculator
+  - Cluster3DGeometryAnnotator
+ # - SuturoShapeAnnotator
+ # - PrimitiveShapeAnnotator
+ # - CaffeAnnotator
+ # - KnnAnnotator
+  - RegionAnnotator
+ # - clusterLabeler
+
+CollectionReader:
+  camera_config_files: ['config_hsrb.ini']
+
+DrawerSurfaceAnnotator:
+  distance_threshold: 0.025
+
+PointCloudFilter:
+  minX: -1.0
+  maxX: 1.0
+  minY: -1.5
+  maxY: 1.5
+  minZ: 0.7
+  maxZ: 2.0
+  transform_cloud: true
+
+ClusterColorHistogramCalculator:
+  semantic_label: true
+
+SuturoRegionFilter:
+  enable_frustum_culling: false
+  enabled: true
+  enable_change_detection: false
+  defaultRegions:
+    - lower_drawer
+  semantic_map_definition: "suturo_semantic_map_drawers.yaml"

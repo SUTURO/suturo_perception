@@ -1,0 +1,37 @@
+ae:
+  name: hsrb_table
+fixedflow:
+  - CollectionReader
+  - ImagePreprocessor
+  - SuturoRegionFilter
+  - NormalEstimator
+  - DrawerSurfaceAnnotator
+  - Cluster3DGeometryAnnotator
+  - RegionAnnotator
+
+
+CollectionReader:
+  camera_config_files: ['config_hsrb.ini']
+
+PlaneAnnotator:
+  min_plane_inliers: 10000
+  distance_threshold: 0.005
+
+PointCloudFilter:
+  minX: -1.0
+  maxX: 1.0
+  minY: -1.5
+  maxY: 1.5
+  minZ: 0.7
+  maxZ: 2.0
+  transform_cloud: true
+
+ClusterColorHistogramCalculator:
+  semantic_label: true
+
+SuturoRegionFilter:
+  enable_frustum_culling: false
+  defaultRegions:
+    - tall_table
+    - long_table
+  semantic_map_definition: "suturo_semantic_map.yaml"

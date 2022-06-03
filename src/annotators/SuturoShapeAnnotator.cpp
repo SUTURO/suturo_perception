@@ -86,8 +86,8 @@ private:
       // Init SAC:
       pcl::SACSegmentationFromNormals<pcl::PointXYZRGBA, pcl::Normal> seg;
       seg.setOptimizeCoefficients(true);
-      seg.setModelType(pcl::SACMODEL_NORMAL_PARALLEL_PLANE);
-      seg.setMethodType(pcl::SAC_RANSAC);
+      //seg.setModelType(pcl::SACMODEL_NORMAL_PARALLEL_PLANE);
+     // seg.setMethodType(pcl::SAC_RANSAC);
       seg.setNormalDistanceWeight(param_distance_weight);
       seg.setMaxIterations(param_max_iterations);
       seg.setDistanceThreshold(param_distance_threshold);
@@ -127,8 +127,8 @@ private:
       // Init SAC:
       pcl::SACSegmentationFromNormals<pcl::PointXYZRGBA, pcl::Normal> seg;
       seg.setOptimizeCoefficients(true);
-      seg.setModelType(pcl::SACMODEL_CYLINDER);
-      seg.setMethodType(pcl::SAC_RANSAC);
+      //seg.setModelType(pcl::SACMODEL_CYLINDER);
+      //seg.setMethodType(pcl::SAC_RANSAC);
       seg.setNormalDistanceWeight(param_distance_weight);
       seg.setMaxIterations(param_max_iterations);
       seg.setDistanceThreshold(param_distance_threshold);

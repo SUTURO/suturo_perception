@@ -1,0 +1,30 @@
+%YAML:1.0
+names:
+  - lower_drawer
+
+lower_drawer:
+  reference_frame: "iai_kitchen/drawer:drawer:drawer_center"
+  depth: 0.28
+  height: 0.24
+  transform: !!opencv-matrix
+    cols: 4
+    data: [ 2.6794896301751692e-08, 0.9999999999999998, 0.0, -0.24, -0.9999999999999998,
+            2.6794896301751692e-08, 0.0, 0, 0.0, 0.0, 1.0, 0.1, 0.0,
+            0.0, 0.0, 1.0 ]
+    dt: d
+    rows: 4
+  type: tables
+  width: 0.18
+
+test_drawer:
+  depth: 0.28
+  height: 0.22
+  transform: !!opencv-matrix
+    cols: 4
+    data: [ 2.6794896301751692e-08, 0.9999999999999998, 0.0, 0.14, -0.9999999999999998,
+            2.6794896301751692e-08, 0.0, -0.31, 0.0, 0.0, 1.1, 0.22, 0.0,
+            0.0, 0.0, 1.0 ]
+    dt: d
+    rows: 4
+  type: tables
+  width: 0.18

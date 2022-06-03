@@ -7,7 +7,9 @@ int main(int argc, char** argv)
     ros::MultiThreadedSpinner spinner(4);
 
     ExtractObjectInfoServer eoi_server(EOI_NAME);
-    ExtractPlaneInfoServer epi_server(EPI_NAME);
+    ExtractDrawerInfoServer edi_server(EDI_NAME);
+    ExtractTableInfoServer eti_server(ETI_NAME);
+    //ExtractPlaneInfoServer epi(EDI_NAME);
 
     spinner.spin();
 

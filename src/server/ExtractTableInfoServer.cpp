@@ -1,14 +1,21 @@
 #include <suturo_perception/PerceptionServer.h>
 
-void ExtractPlaneInfoServer::execute(const suturo_perception_msgs::ExtractPlaneInfoGoalConstPtr & goal) {
+void ExtractTableInfoServer::execute(const suturo_perception_msgs::ExtractPlaneInfoGoalConstPtr & goal) {
     std::map<std::string, boost::any> arguments = std::map<std::string, boost::any>();
     arguments["visualize"] = goal->visualize;
+
+    if(!goal->regions.empty()) {
+        arguments["regions"] = goal->regions;
+    }
+
     std::vector<std::string> regions = std::vector<std::string>();
-    std::vector<DrawerDetectionData> data;
-    pm.runDrawerDetection(arguments, data);
+    std::vector<ObjectDetectionData> data;
+
+    //result.detectionData.clear();
+    pm.runTableDetection(arguments, data);
 
     if(!data.empty()) {
-        feedback.feedback = "Door detection was successful.";
+        feedback.feedback = "Table detection was successful.";
 
         result.detectionData.height = data[0].height;
         result.detectionData.width = data[0].width;
@@ -21,16 +28,16 @@ void ExtractPlaneInfoServer::execute(const suturo_perception_msgs::ExtractPlaneI
         server.publishFeedback(feedback);
         server.setSucceeded(result);
     } else {
-        feedback.feedback = "No door detection data was perceived. Check standard output for further information.";
+        feedback.feedback = "No table data was perceived. Check standard output for further information.";
         server.publishFeedback(feedback);
         server.setAborted();
     }
 }
 
-ExtractPlaneInfoServer::ExtractPlaneInfoServer(std::string name) :
-        PerceptionServer(name, "hsrb_drawers"),
-        server(nh, name, boost::bind(&ExtractPlaneInfoServer::execute, this, _1), false)
+ExtractTableInfoServer::ExtractTableInfoServer(std::string name) :
+        PerceptionServer(name, "hsrb_table"),
+        server(nh, name, boost::bind(&ExtractTableInfoServer::execute, this, _1), false)
 {
     server.start();
-    ROS_INFO("ExtractPlaneInfoServer started..");
+    ROS_INFO("ExtractTableInfoServer started..");
 }

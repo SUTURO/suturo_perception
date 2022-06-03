@@ -20,6 +20,7 @@ namespace suturo_perception {
         }
 
         template<typename T>
+        //hier nicht
         uima::FeatureStructure to(uima::CAS &cas, const T &input)
         {
             std::string msg = std::string("no conversion for type '") + typeid(T).name() + "' defined";
@@ -54,6 +55,7 @@ namespace suturo_perception {
         }
 
         template<>
+        //hier nicht
         uima::FeatureStructure to(uima::CAS &cas, const geometry_msgs::PoseStamped &input)
         {
             rs::Pose pose = rs::create<rs::Pose>(cas);
@@ -122,6 +124,34 @@ namespace suturo_perception {
             odd.confidence_class = confidence;
             odd.color = c;
             odd.color_hsv = hsv;
+        }
+
+        void makeTableObjectDetectionData(geometry_msgs::PoseStamped &pose, rs::Geometry &geometry, std::string region,
+                                     std::string &objClass, float confidence, suturo_perception_msgs::ObjectDetectionData &odd) {
+
+            odd.pose = pose;
+            auto boundingBox = geometry.boundingBox();
+            odd.width = boundingBox.width();
+            odd.depth= boundingBox.height();
+            odd.height = boundingBox.depth();
+            odd.region = region;
+            odd.name = "Object (" + objClass + ")";
+            odd.obj_class = objClass;
+            odd.confidence_class = confidence;
+        }
+
+        void makeDrawerDetectionData(geometry_msgs::PoseStamped &pose, rs::Geometry &geometry, std::string region,
+                                     std::string &objClass, float confidence, suturo_perception_msgs::DrawerDetectionData &ddd) {
+
+            ddd.pose = pose;
+            auto boundingBox = geometry.boundingBox();
+            ddd.width = boundingBox.width();
+            ddd.depth= boundingBox.height();
+            ddd.height = boundingBox.depth();
+            ddd.region = region;
+            ddd.name = "Object (" + objClass + ")";
+            ddd.obj_class = objClass;
+            ddd.confidence_class = confidence;
         }
     }
 }

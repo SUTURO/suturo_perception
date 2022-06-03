@@ -49,6 +49,7 @@ catkin_package(
    CFG_EXTRAS ${PROJECT_NAME}_config.cmake
    CATKIN_DEPENDS robosherlock actionlib_msgs suturo_perception_msgs robosherlock_msgs rapidjson_ros
    )
+
 ################################################################################
 ## Package dependencies                                                       ##
 ################################################################################
@@ -82,6 +83,8 @@ add_library(${PROJECT_NAME}
 		include/suturo_perception/PerceptionServer.h
 		src/server/ExtractObjectInfoServer.cpp
 		src/server/ExtractPlaneInfoServer.cpp
+		src/server/ExtractDrawerInfoServer.cpp
+		src/server/ExtractTableInfoServer.cpp
 		src/utils/SuturoProcessManager.cpp
 		src/utils/suturo_conversion.cpp
 		include/suturo_perception/suturo_conversion.h)
@@ -126,3 +129,6 @@ target_link_libraries(rs_RegionAnnotator ${catkin_LIBRARIES})
 # Suturo Region Filter
 rs_add_library(rs_SuturoRegionFilter src/annotators/SuturoRegionFilter.cpp)
 target_link_libraries(rs_SuturoRegionFilter ${catkin_LIBRARIES} ${YAML_CPP_LIBRARIES})
+
+rs_add_library(rs_DrawerSurfaceAnnotator src/DrawerSurfaceAnnotator.cpp)
+target_link_libraries(rs_DrawerSurfaceAnnotator ${catkin_LIBRARIES})
